@@ -24,4 +24,6 @@ export interface IProduct {
 export interface IGetProducts {
   page: number;
   size: number;
+  sort?: 'ASC' | 'DESC';
+  orderBy?: string;
 }

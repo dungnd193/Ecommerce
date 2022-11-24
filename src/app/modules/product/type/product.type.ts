@@ -23,18 +23,33 @@ export interface IColors {
 export interface ICategory {
   id: string;
   name: string;
-  parentId: string;
-  displayOrder: number;
+  parentId?: string;
+  displayOrder?: number;
+}
+
+export interface IQuantity {
+  sizeId: string;
+  sizeName: string;
+  colorId: string;
+  colorCode: string;
+  colorName: string;
+  quantity: number;
 }
 export interface IProduct {
   id?: string;
+  code: string;
   name?: string;
   brand?: string;
-  priceOut?: number;
+  price?: number;
   description?: string;
   totalQuantity?: number;
   colors?: IColors[];
   category?: ICategory;
+  discount?: string;
+  quantity?: IQuantity[];
+  viewCount?: number;
+  status?: string;
+  nameUrlImage?: string[];
 }
 
 export interface IProductFeedback {

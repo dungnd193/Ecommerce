@@ -24,18 +24,16 @@ export interface IProduct {
 export interface ICategories {
   id: string;
   name: string;
-  parentId: string;
-  displayOrder: number;
 }
 
 export interface IColors {
-  id: number;
-  colorName: string;
-  colorCode: string;
+  id: string;
+  name: string;
+  code: string;
 }
 
 export interface ISizes {
-  id: number;
+  id: string;
   name: string;
 }
 
@@ -43,5 +41,4 @@ export interface IDetailRow {
   color: IColors;
   size: ISizes;
   quantity: number;
-  multipartFiles?: any;
 }

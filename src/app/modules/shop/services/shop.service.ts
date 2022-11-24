@@ -20,11 +20,11 @@ export class ShopService {
   get totalProducts$() {
     return this.totalProductsBS.asObservable();
   }
-  getProducts({ page, size }: IGetProducts) {
-    this.shopApiService.getProducts({ page, size }).subscribe(
+  getProducts({ page, size, sort, orderBy }: IGetProducts) {
+    this.shopApiService.getProducts({ page, size, sort, orderBy }).subscribe(
       (data) => {
         this.productsBS.next(data.content);
-        this.totalProductsBS.next(data.totalElements);
+        this.totalProductsBS.next(data.pageable.total);
       },
       (err) => {
         this.toast.error('Fetching data error!');
@@ -35,11 +35,19 @@ export class ShopService {
     this.shopApiService.getProductByPrice(start, end).subscribe(
       (data) => {
         this.productsBS.next(data.content);
-        this.totalProductsBS.next(data.totalElements);
+        this.totalProductsBS.next(data.pageable.total);
       },
       (err) => {
         this.toast.error('Fetching data error!');
       }
     );
+  }
+
+  uploadProductImage(files: FileList) {
+    this.shopApiService.uploadProductImage(files).subscribe();
+  }
+
+  createProduct(files: FileList) {
+    this.shopApiService.createProduct(files).subscribe();
   }
 }

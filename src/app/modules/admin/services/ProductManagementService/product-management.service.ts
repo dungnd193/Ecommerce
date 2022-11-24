@@ -20,13 +20,16 @@ export class ProductManagementService {
   ) {}
   private productsBS = new BehaviorSubject<IProduct[]>([]);
   private currentProductBS = new BehaviorSubject<IProduct>({
-    colors: [{}],
+    quantity: [{}],
     category: {},
   } as IProduct);
   private totalProductsBS = new BehaviorSubject<number>(0);
   private categoriesBS = new BehaviorSubject<ICategories[]>([]);
   private colorsBS = new BehaviorSubject<IColors[]>([]);
   private sizesBS = new BehaviorSubject<ISizes[]>([]);
+  private nameUrlImageBS = new BehaviorSubject<
+    { fileName: string; originalName: string }[]
+  >([]);
   get products$() {
     return this.productsBS.asObservable();
   }
@@ -48,20 +51,29 @@ export class ProductManagementService {
   set currentProduct(value: IProduct) {
     this.currentProductBS.next(value);
   }
+  get nameUrlImage$() {
+    return this.nameUrlImageBS.asObservable();
+  }
+  set nameUrlImage(value: { fileName: string; originalName: string }[]) {
+    this.nameUrlImageBS.next(value);
+  }
   getProducts({ page, size }: IGetProducts) {
     this.productManagementApiService.getProducts({ page, size }).subscribe(
       (data) => {
         this.productsBS.next(data.content);
-        this.totalProductsBS.next(data.totalElements);
+        this.totalProductsBS.next(data.pageable.total);
       },
       (err) => {
         this.toast.error('Fetching data error!');
       }
     );
   }
-  getProductDetail(id: string) {
+  getProductDetail(id: string, callback: Function) {
     this.productManagementApiService.getProductDetail(id).subscribe((data) => {
       this.currentProductBS.next(data);
+      if (callback) {
+        callback();
+      }
     });
   }
   saveProduct(product: IProduct) {
@@ -123,5 +135,17 @@ export class ProductManagementService {
     this.productManagementApiService.getColors().subscribe((data) => {
       this.colorsBS.next(data);
     });
+  }
+
+  uploadProductImage(files: FileList) {
+    this.productManagementApiService
+      .uploadProductImage(files)
+      .subscribe((data) => {
+        this.nameUrlImageBS.next(data.nameUrlImage);
+      });
+  }
+
+  deleteProductImage(fileName: string) {
+    this.productManagementApiService.deleteProductImage(fileName).subscribe();
   }
 }

@@ -76,8 +76,16 @@ export class HomeComponent implements OnInit {
 
   selectedCity1!: City;
   loadMore() {}
+
+  uploadFile(event: Event) {
+    const element = event.currentTarget as HTMLInputElement;
+    let fileList: FileList | null = element.files;
+    if (fileList) {
+      this.shopService.createProduct(fileList);
+    }
+  }
   ngOnInit(): void {
-    this.shopService.getProducts({ page: 0, size: 10 });
+    this.shopService.getProducts({ page: 1, size: 10 });
 
     this.shopService.products$.subscribe((data) => (this.products = data));
 

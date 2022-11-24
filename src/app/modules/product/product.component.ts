@@ -1,3 +1,4 @@
+import { ProductManagementService } from './../admin/services/ProductManagementService/product-management.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -15,6 +16,7 @@ export class ProductComponent implements OnInit {
   constructor(
     private activeRouter: ActivatedRoute,
     private productService: ProductService,
+    private productManagementService: ProductManagementService,
     private cartService: CartService,
     private toastr: ToastrService
   ) {}
@@ -65,7 +67,7 @@ export class ProductComponent implements OnInit {
       description: this.product.description,
       colorId: this.productInfo.get('colorNSize')!.value.colorId,
       sizeId: this.productInfo.get('colorNSize')!.value.sizeId,
-      priceOut: this.product.priceOut,
+      priceOut: this.product.price,
     });
   }
 
@@ -85,14 +87,12 @@ export class ProductComponent implements OnInit {
 
     this.productService.getProduct(this.id);
     this.productService.getProductFeedback(this.id);
+    // const product = { ...this.product, viewCount: this.product.viewCount! + 1 };
+    // this.productManagementService.editProduct(product);
 
     this.productService.product$.subscribe((data) => {
       this.product = data;
-      let arr: any = [];
-      this.product.colors?.map((color) => {
-        arr = [...arr, ...color.urlImages.map((item) => item)];
-      });
-      this.thumbnailImgList = arr;
+      this.thumbnailImgList = this.product.nameUrlImage || [];
     });
     this.productService.productFeedback$.subscribe(
       (data) => ((this.feedbackList = data), console.log(data))

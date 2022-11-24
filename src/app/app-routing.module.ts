@@ -49,7 +49,7 @@ const routes: Routes = [
     path: 'admin',
     loadChildren: () =>
       import('app/modules/admin/admin.module').then((m) => m.AdminModule),
-    canActivate: [AdminGuard],
+    // canActivate: [AdminGuard],
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', component: ErrorPageComponent },

@@ -58,6 +58,9 @@
     border: 1px solid #f1f1f1;
     padding: 4px 10px;
     font-weight: 300;
+    display: flex;
+    align-items: center;
+    column-gap: 6px;
     &:hover {
       border: 1px solid #8d8d8d;
     }
@@ -98,10 +101,12 @@
     }
     &-rating {
       display: flex;
+      align-items: center;
       column-gap: 10px;
       color: #29282d;
       font-size: 16px;
       margin-left: 10px;
+      color: #ababab;
     }
   }
   &__description {
@@ -112,6 +117,11 @@
   }
   &__color {
     margin-bottom: 20px;
+    &-item {
+      width: 10px;
+      height: 10px;
+      border: 1px solid #f1f1f1;
+    }
   }
   &__size {
     margin-bottom: 20px;
@@ -132,6 +142,12 @@
     border: 1px solid #8d8d8d;
     color: #8d8d8d;
   }
+  // &__color {
+  //   width: 10px;
+  //   height: 10px;
+  //   border: 1px solid #8d8d8d;
+  //   background-color: red;
+  // }
 }
 .product-add-btn {
   display: inline-block;

@@ -11,14 +11,45 @@ export class ShopApiService {
   API_URL = environment.serverUrl;
 
   constructor(private http: HttpClient) {}
-  getProducts({ page, size }: IGetProducts): Observable<any> {
+  getProducts({ page, size, sort, orderBy }: IGetProducts): Observable<any> {
+    console.log(orderBy, sort);
     return this.http.get(
-      `${this.API_URL}/api/products?page=${page}&size=${size}`
+      `${this.API_URL}/products?page=${page}&size=${size}${
+        orderBy ? `&orderBy=${orderBy}` : ''
+      }&sort=${sort || 'ASC'}`
     );
   }
   getProductByPrice(start: number, end: number): Observable<any> {
     return this.http.get(
-      `${this.API_URL}/api/products/price?start=${start}&end=${end}`
+      `${this.API_URL}/products?page=1&size=6&orderBy=price&sort=ASC&start=${start}&end=${end}`
     );
+  }
+
+  uploadProductImage(files: FileList) {
+    const formData = new FormData();
+    Object.values(files).forEach((img) => {
+      formData.append('image', img as any);
+    });
+    return this.http.post(`${this.API_URL}/products/upload`, formData);
+  }
+
+  createProduct(files: any) {
+    const product = {
+      title: 'product 1',
+      description: 'product 1',
+      code: '#P01',
+      quantity: 10,
+      brand: 'adidas',
+      discount: '10%',
+      viewCount: 333,
+      status: 'INSTOCK',
+      size: ['S', 'M', 'L'],
+      price: 100000,
+      nameUrlImage: [
+        '1669101165010-989349649.jpg',
+        '1669101165011-556504407.jpeg',
+      ],
+    };
+    return this.http.post(`${this.API_URL}/products`, product);
   }
 }

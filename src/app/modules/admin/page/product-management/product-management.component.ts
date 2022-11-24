@@ -6,7 +6,7 @@ import {
 } from 'app/modules/product/type/product.type';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 import {
   ICategories,
   IColors,
@@ -29,15 +29,16 @@ export class ProductManagementComponent implements OnInit {
   statuses!: any[];
   uploadedFiles: any[] = [];
   productImg: string[] = [];
+  productImgNeedToDelete: string[] = [];
   totalProducts: number = 0;
   categories: ICategories[] = [];
   colors: IColors[] = [];
   sizes: ISizes[] = [];
   detailRow!: IDetailRow[];
   fd = new FormData();
-  colorListOfProduct: IColors[] = [];
   colorUploadImg!: IColorsProduct;
   detailDataRow = new BehaviorSubject<any[]>([]);
+  nameUrlImage: { fileName: string; originalName: string }[] = [];
 
   get detailDataRow$() {
     return this.detailDataRow.asObservable();
@@ -51,11 +52,13 @@ export class ProductManagementComponent implements OnInit {
     private confirmationService: ConfirmationService
   ) {}
   paginate(event: any) {
-    this.productService.getProducts({ page: event.page, size: 6 });
+    console.log(event);
+    this.productService.getProducts({ page: event.page + 1, size: 6 });
   }
   handleOpenEditProductDialog(product: IProduct) {
-    this.productService.getProductDetail(product.id!);
-    this.productDialog = true;
+    this.productService.getProductDetail(product.id!, () => {
+      this.productDialog = true;
+    });
   }
   handleOpenAddProductDialog() {
     this.productDialog = true;
@@ -63,8 +66,15 @@ export class ProductManagementComponent implements OnInit {
   handleCloseDialog() {
     this.productImg = [];
     this.productService.currentProduct = {} as IProduct;
+    this.detailDataRowBS = [];
+    this.productImgNeedToDelete = [];
     this.productDialog = false;
+    this.nameUrlImage.forEach((item) => {
+      this.productService.deleteProductImage(item.fileName);
+    });
+    this.productService.nameUrlImage = [];
   }
+
   handleAddColorAndSize() {
     const newArr = [
       ...this.detailDataRow.getValue(),
@@ -72,37 +82,17 @@ export class ProductManagementComponent implements OnInit {
         color: {} as IColors,
         size: {} as ISizes,
         quantity: 0,
-        multipartFiles: [],
       },
     ];
-    // const newArr = [
-    //   ...this.detailRow,
-    //   {
-    //     color: {} as IColors,
-    //     size: {} as ISizes,
-    //     quantity: 0,
-    //     multipartFiles: [],
-    //   },
-    // ];
-    // this.detailRow = newArr;
     this.detailDataRowBS = newArr;
-
-    console.log(this.detailDataRow.getValue());
   }
   handleDeleteColorAndSize(value: IDetailRow) {
     const newArr = this.detailDataRow
       .getValue()
       .filter((item: IDetailRow) => item !== value);
     this.detailDataRowBS = newArr;
-    // const newArr = this.detailRow.filter((item: IDetailRow) => item !== value);
-    // this.detailRow = newArr;
   }
-  handleLog() {
-    // console.log(this.detailRow);
-    console.log(this.detailDataRow.getValue());
-    console.log(this.product);
-    console.log(this.colorUploadImg);
-  }
+
   deleteSelectedProducts() {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected products?',
@@ -129,38 +119,62 @@ export class ProductManagementComponent implements OnInit {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
+        product.nameUrlImage?.forEach((fileName) => {
+          this.productService.deleteProductImage(fileName);
+        });
         this.productService.deleteProduct(product.id!);
       },
     });
   }
   saveProduct() {
-    // this.submitted = true;
-    // if (this.product.name!.trim()) {
-    //   if (this.product.id) {
-    //     this.productService.editProduct(this.product);
-    //   } else {
-    //     this.productService.saveProduct(
-    //       this.productService.generateProduct(this.product)
-    //     );
-    //   }
-    //   this.productDialog = false;
-    //   this.resetProduct();
-    // }
+    const quantity = this.detailRow.map((item) => ({
+      sizeId: item.size.id,
+      sizeName: item.size.name,
+      colorId: item.color.id,
+      colorCode: item.color.code,
+      colorName: item.color.name,
+      quantity: item.quantity,
+    }));
+    if (this.product.id) {
+      const product = {
+        ...this.product,
+        quantity,
+        nameUrlImage: [
+          ...this.productImg,
+          ...this.nameUrlImage.map((item) => item.fileName),
+        ],
+      };
+
+      this.productService.editProduct(product);
+      if (this.productImgNeedToDelete.length) {
+        this.productImgNeedToDelete.forEach((fileName) =>
+          this.productService.deleteProductImage(fileName)
+        );
+      }
+      this.productDialog = false;
+      this.productService.nameUrlImage = [];
+      this.productService.currentProduct = {} as IProduct;
+      return;
+    }
+    const product = {
+      ...this.product,
+      viewCount: 0,
+      status: 'INSTOCK',
+      quantity,
+      nameUrlImage: this.nameUrlImage.map((item) => item.fileName),
+    };
+    this.productService.saveProduct(product);
+    this.productDialog = false;
+    this.productService.nameUrlImage = [];
+    this.productService.currentProduct = {} as IProduct;
   }
 
   handleUploadImg(originalEvent: any, files: any, currentFiles: any) {
-    currentFiles.currentFiles.map((file: File) => {
+    currentFiles.currentFiles.forEach((file: File) => {
       this.fd.append('image', file, file.name);
     });
-    let list: File[] = [];
-    for (var pair of this.fd.entries()) {
-      list = [...list, pair[1] as File];
-    }
-    const value = (this.detailDataRow.getValue()[
-      this.detailDataRow.getValue().length - 1
-    ].multipartFiles = this.fd);
-    this.detailDataRowBS = value;
-    // this.detailRow[this.detailRow.length - 1].multipartFiles = this.fd;
+
+    this.productService.uploadProductImage(currentFiles.currentFiles);
 
     this.messageService.add({
       severity: 'info',
@@ -171,17 +185,27 @@ export class ProductManagementComponent implements OnInit {
 
   handleRemoveImg(originalEvent: any, file: any) {
     // Update formData when remove img
+    this.fd = new FormData();
     let list: File[] = [];
     for (var pair of this.fd.entries()) {
       list = [...list, pair[1] as File];
     }
-    list = list.filter((item) => item.name !== file.file.name);
-    this.fd = new FormData();
-    list.map((file: File) => {
-      this.fd.append('image', file, file.name);
+    list.forEach((item) => {
+      if (item.name !== file.file.name) {
+        this.fd.append('image', file, file.name);
+      }
     });
-    console.log(list);
+    const fileDeleted = this.nameUrlImage.find(
+      (item) => item.originalName === file.file.name
+    );
+
+    this.productService.deleteProductImage(fileDeleted!.fileName);
+
+    this.productService.nameUrlImage = this.nameUrlImage.filter(
+      (item) => item.originalName !== file.file.name
+    );
   }
+
   handleFilterBlobal(event: Event) {
     this.productTable.filterGlobal(
       (event.target! as HTMLInputElement).value,
@@ -191,11 +215,16 @@ export class ProductManagementComponent implements OnInit {
 
   handleChangeCategory(event: MatRadioChange) {
     this.product.category = event.value;
-    console.log(this.product);
+  }
+
+  handleDeleteProductImage(fileName: string) {
+    this.productImgNeedToDelete.push(fileName);
+    this.productImg = this.productImg.filter((item) => item !== fileName);
+    // this.productService.deleteProductImage(fileName);
   }
 
   ngOnInit(): void {
-    this.productService.getProducts({ page: 0, size: 6 });
+    this.productService.getProducts({ page: 1, size: 6 });
     this.productService.getCategories();
     this.productService.getColors();
     this.productService.getSizes();
@@ -214,36 +243,20 @@ export class ProductManagementComponent implements OnInit {
       this.colors = data[3];
       this.sizes = data[4];
       this.product = data[5];
-      let arr: any = [];
-      this.product.colors?.map((item) => {
-        item.sizes?.map((s) => {
-          arr = [
-            ...arr,
-            {
-              color: item.color,
-              size: s.size,
-              quantity: s.quantity,
-              multipartFiles: item.urlImages,
-            },
-          ];
-        });
-      });
-      this.product.colors?.map((color) => {
-        color.urlImages.map((item) => {
-          this.productImg.push(item);
-        });
-      });
-      this.detailDataRowBS = arr;
-      // this.detailRow = arr;
+      this.productImg = data[5].nameUrlImage || [];
+      this.detailDataRowBS = data[5].quantity?.map((item) => ({
+        color: { id: item.colorId, code: item.colorCode, name: item.colorName },
+        size: { id: item.sizeId, name: item.sizeName },
+        quantity: item.quantity,
+      }));
     });
 
     this.detailDataRow$.subscribe((data) => {
-      console.log(data);
       this.detailRow = data;
-      this.colorListOfProduct = Array.from(
-        new Set(this.detailDataRow.getValue().map((item) => item.color))
-      );
-      console.log(this.colorListOfProduct);
+    });
+
+    this.productService.nameUrlImage$.subscribe((data) => {
+      this.nameUrlImage = data;
     });
 
     this.statuses = [

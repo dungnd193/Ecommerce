@@ -32,13 +32,13 @@
                 >
                   <li class="side-bar__filter-color-item">
                     <span class="side-bar__filter-color-title">
-                      {{ item.colorName }}
+                      {{ item.name }}
                     </span>
                     <span
                       class="side-bar__filter-color-background"
-                      [style.backgroundColor]="item.colorCode"
+                      [style.backgroundColor]="item.code"
                       [style.border]="
-                        item.colorCode === '#FFFFFF' ? '1px solid #ccc' : ''
+                        item.name === '#FFFFFF' ? '1px solid #ccc' : ''
                       "
                     >
                     </span>
@@ -105,7 +105,9 @@
               <div class="col-12">
                 <div class="product-list-item">
                   <img
-                    [src]="product.thumbnail[0].urlImages[0]"
+                    [src]="
+                      'http://localhost:8080/images/' + product.nameUrlImage[0]
+                    "
                     [alt]="product.name"
                   />
                   <div class="product-list-detail">
@@ -113,12 +115,12 @@
                     <div class="product-description">
                       {{ product.description }}
                     </div>
-                    <p-rating
+                    <!-- <p-rating
                       [ngModel]="product.thumbnail[0].star"
                       [readonly]="true"
                       [cancel]="false"
                     ></p-rating>
-                    <i class="pi pi-tag product-category-icon"></i>
+                    <i class="pi pi-tag product-category-icon"></i> -->
                     <span
                       class="product-category"
                       style="text-transform: capitalize"
@@ -156,7 +158,10 @@
                   </div>
                   <div class="product-grid-item-content">
                     <img
-                      [src]="product.thumbnail[0].urlImages[0]"
+                      [src]="
+                        'http://localhost:8080/images/' +
+                        product.nameUrlImage[0]
+                      "
                       [alt]="product.name"
                       [routerLink]="['/product', product.id]"
                       style="cursor: pointer"
@@ -171,11 +176,11 @@
                     <div class="product-description">
                       {{ product.description }}
                     </div>
-                    <p-rating
+                    <!-- <p-rating
                       [ngModel]="product.thumbnail[0].star"
                       [readonly]="true"
                       [cancel]="false"
-                    ></p-rating>
+                    ></p-rating> -->
                   </div>
                   <div class="product-grid-item-bottom">
                     <span class="product-price">{{

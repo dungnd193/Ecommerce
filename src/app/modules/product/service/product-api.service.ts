@@ -12,7 +12,7 @@ export class ProductApiService {
 
   constructor(private http: HttpClient) {}
   getProduct(id: string): Observable<any> {
-    return this.http.get(`${this.API_URL}/api/products/${id}`);
+    return this.http.get(`${this.API_URL}/products/${id}`);
   }
   getProductFeedback(id: string): Observable<any> {
     return this.http.get(`${this.API_URL}/api/feedbacks?prodId=${id}`);

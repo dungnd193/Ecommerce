@@ -122,7 +122,7 @@
       background: #feedaf;
       color: #8a5340;
     }
-    &.status-outofstock {
+    &.status-out_of_stock {
       background: #ffcdd2;
       color: #c63737;
     }
@@ -199,6 +199,23 @@
 }
 :host ::ng-deep .p-dialog .product-image {
   width: 150px;
+  height: 100%;
+
+  position: relative;
+  & > img {
+    width: 100%;
+  }
+  & > .pi-times {
+    position: absolute;
+    top: 5px;
+    background: white;
+    right: 5px;
+    border-radius: 100%;
+    padding: 5px;
+    color: #000;
+    box-shadow: 0px 0px 4px #b2b2b2;
+    cursor: pointer;
+  }
 }
 
 .management-product {

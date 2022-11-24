@@ -1,7 +1,7 @@
 <div class="container">
   <div class="product">
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         <p-galleria
           [showItemNavigators]="true"
           [showThumbnailNavigators]="false"
@@ -18,32 +18,37 @@
           <ng-template pTemplate="item" let-item>
             <img
               class="img-item"
-              [src]="item"
+              [src]="'http://localhost:8080/images/' + item"
               alt="img"
               style="width: 100%; display: block"
             />
           </ng-template>
           <ng-template pTemplate="thumbnail" let-item>
             <div class="grid grid-nogutter justify-content-center">
-              <img class="img-thumbnail" [src]="item" alt="img" />
+              <img
+                class="img-thumbnail"
+                [src]="'http://localhost:8080/images/' + item"
+                alt="img"
+              />
             </div>
           </ng-template>
         </p-galleria>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <form class="product-info" [formGroup]="productInfo">
           <h3 class="product-info__name">{{ product.name }}</h3>
           <div class="product-info__cost">
             <span class="product-info__cost-text">{{
-              product.priceOut | currency: "VND"
+              product.price | currency: "VND"
             }}</span>
             <div class="product-info__cost-rating">
-              <p-rating
+              <!-- <p-rating
                 [readonly]="true"
                 [stars]="5"
                 [cancel]="false"
-              ></p-rating>
-              ({{ 24 }})
+              ></p-rating> -->
+              <i class="pi pi-eye"></i>
+              {{ product.viewCount }} views
             </div>
           </div>
           <div class="product-info__description">
@@ -56,16 +61,18 @@
             <h3 class="product-info__title">Color</h3>
             <div class="product-info__group">
               <div class="field-color-checkbox">
-                <ng-container *ngFor="let item of product.colors">
-                  <ng-container *ngFor="let s of item.sizes">
-                    <mat-radio-group formControlName="colorNSize" name="colors">
-                      <mat-radio-button
-                        [value]="{ colorId: item.color.id, sizeId: s.size.id }"
-                      >
-                        {{ item.color.colorName }} ({{ s.size.name }})
-                      </mat-radio-button>
-                    </mat-radio-group>
-                  </ng-container>
+                <ng-container *ngFor="let item of product.quantity">
+                  <mat-radio-group formControlName="colorNSize" name="colors">
+                    <mat-radio-button
+                      [value]="{ colorId: item.colorId, sizeId: item.sizeId }"
+                    >
+                      <div
+                        class="product-info__color-item"
+                        [style.background]="item.colorCode"
+                      ></div>
+                      {{ item.colorName }} ({{ item.sizeName }})
+                    </mat-radio-button>
+                  </mat-radio-group>
                 </ng-container>
               </div>
             </div>
@@ -78,6 +85,16 @@
               <div class="col-8">
                 <h3 class="product-info__category-detail">
                   {{ product.category?.name }}
+                </h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                <h3 class="product-info__title">Code:</h3>
+              </div>
+              <div class="col-8">
+                <h3 class="product-info__category-detail">
+                  {{ product.code }}
                 </h3>
               </div>
             </div>
