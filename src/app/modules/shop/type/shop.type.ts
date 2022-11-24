@@ -26,4 +26,9 @@ export interface IGetProducts {
   size: number;
   sort?: 'ASC' | 'DESC';
   orderBy?: string;
+  colorId?: string;
+  categoryId?: string;
+  name?: string;
+  start?: number;
+  end?: number;
 }

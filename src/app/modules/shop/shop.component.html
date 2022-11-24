@@ -25,26 +25,36 @@
             <h3 class="side-bar__filter-title">COLOR FILTER</h3>
             <mat-radio-group name="color-filter">
               <ul class="side-bar__filter-color">
-                <mat-radio-button
-                  (change)="handleFilterByColors($event)"
-                  *ngFor="let item of colorFilterList"
-                  [value]="item.id"
+                <ng-container
+                  *ngFor="let item of colorFilterList; let idx = index"
                 >
-                  <li class="side-bar__filter-color-item">
-                    <span class="side-bar__filter-color-title">
-                      {{ item.name }}
-                    </span>
-                    <span
-                      class="side-bar__filter-color-background"
-                      [style.backgroundColor]="item.code"
-                      [style.border]="
-                        item.name === '#FFFFFF' ? '1px solid #ccc' : ''
-                      "
-                    >
-                    </span>
-                  </li>
-                </mat-radio-button>
+                  <mat-radio-button
+                    (change)="handleFilterByColors($event)"
+                    *ngIf="isShowAllCategories ? isShowAllCategories : idx <= 5"
+                    [value]="item.id"
+                  >
+                    <li class="side-bar__filter-color-item">
+                      <span class="side-bar__filter-color-title">
+                        {{ item.name }}
+                      </span>
+                      <span
+                        class="side-bar__filter-color-background"
+                        [style.backgroundColor]="item.code"
+                        [style.border]="
+                          item.code === '#FFFFFF' ? '1px solid #ccc' : ''
+                        "
+                      >
+                      </span>
+                    </li>
+                  </mat-radio-button>
+                </ng-container>
               </ul>
+              <span
+                class="side-bar__filter-show-more"
+                (click)="handleShowMoreCategories()"
+              >
+                Show {{ isShowAllCategories ? "less" : "more" }}
+              </span>
             </mat-radio-group>
           </div>
           <div class="side-bar__filter">
@@ -109,18 +119,20 @@
                       'http://localhost:8080/images/' + product.nameUrlImage[0]
                     "
                     [alt]="product.name"
+                    [style.cursor]="'pointer'"
+                    [routerLink]="['/product', product.id]"
                   />
                   <div class="product-list-detail">
-                    <div class="product-name">{{ product.name }}</div>
+                    <div
+                      class="product-name"
+                      [style.cursor]="'pointer'"
+                      [routerLink]="['/product', product.id]"
+                    >
+                      {{ product.name }}
+                    </div>
                     <div class="product-description">
                       {{ product.description }}
                     </div>
-                    <!-- <p-rating
-                      [ngModel]="product.thumbnail[0].star"
-                      [readonly]="true"
-                      [cancel]="false"
-                    ></p-rating>
-                    <i class="pi pi-tag product-category-icon"></i> -->
                     <span
                       class="product-category"
                       style="text-transform: capitalize"
@@ -129,9 +141,14 @@
                     </span>
                   </div>
                   <div class="product-list-action">
-                    <span class="product-price">{{
-                      product.price | currency: "VND"
-                    }}</span>
+                    <span class="product-price">
+                      {{ product.price | currency: "VND" }}
+                    </span>
+                    <p-button
+                      icon="pi pi-shopping-cart"
+                      label="Add to Cart"
+                      [disabled]="product.status === 'OUTOFSTOCK'"
+                    ></p-button>
                     <span [class]="'product-badge status-' + 'instock'">
                       {{ "INSTOCK" }}
                     </span>
@@ -176,26 +193,28 @@
                     <div class="product-description">
                       {{ product.description }}
                     </div>
-                    <!-- <p-rating
-                      [ngModel]="product.thumbnail[0].star"
-                      [readonly]="true"
-                      [cancel]="false"
-                    ></p-rating> -->
                   </div>
                   <div class="product-grid-item-bottom">
-                    <span class="product-price">{{
-                      product.price | currency: "VND"
-                    }}</span>
+                    <span class="product-price">
+                      {{ product.price | currency: "VND" }}
+                    </span>
+                    <p-button
+                      icon="pi pi-shopping-cart"
+                      [disabled]="product.status === 'OUTOFSTOCK'"
+                    ></p-button>
                   </div>
                 </div>
               </div>
             </ng-template>
           </p-dataView>
           <p-paginator
+            #paginator
             [rows]="6"
             [totalRecords]="totalProducts"
             (onPageChange)="paginate($event)"
+            [first]="2"
           ></p-paginator>
+          <!-- [pageLinkSize]="this.page" -->
         </div>
       </div>
     </div>

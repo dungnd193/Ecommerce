@@ -11,12 +11,26 @@ export class ShopApiService {
   API_URL = environment.serverUrl;
 
   constructor(private http: HttpClient) {}
-  getProducts({ page, size, sort, orderBy }: IGetProducts): Observable<any> {
-    console.log(orderBy, sort);
+  getProducts({
+    page,
+    size,
+    sort,
+    orderBy,
+    colorId,
+    categoryId,
+    name,
+    start,
+    end,
+  }: IGetProducts): Observable<any> {
     return this.http.get(
       `${this.API_URL}/products?page=${page}&size=${size}${
-        orderBy ? `&orderBy=${orderBy}` : ''
-      }&sort=${sort || 'ASC'}`
+        sort ? `&sort=${sort}` : ''
+      }${orderBy ? `&orderBy=${orderBy}` : ''}${
+        colorId ? `&colorId=${colorId}` : ''
+      }${categoryId ? `&categoryId=${categoryId}` : ''}${
+        name ? `&name=${name}` : ''
+      }${start && end ? `&start=${start}&end=${end}` : ''}
+      `
     );
   }
   getProductByPrice(start: number, end: number): Observable<any> {

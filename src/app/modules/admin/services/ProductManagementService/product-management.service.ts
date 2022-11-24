@@ -60,6 +60,7 @@ export class ProductManagementService {
   getProducts({ page, size }: IGetProducts) {
     this.productManagementApiService.getProducts({ page, size }).subscribe(
       (data) => {
+        console.log(data.content);
         this.productsBS.next(data.content);
         this.totalProductsBS.next(data.pageable.total);
       },
@@ -87,11 +88,13 @@ export class ProductManagementService {
       }
     );
   }
-  editProduct(product: IProduct) {
+  editProduct(product: IProduct, isShowToast: boolean = true) {
     this.productManagementApiService.editProduct(product).subscribe(
       (data) => {
-        this.toast.success('Product editted successfully!');
-        this.getProducts({ page: 1, size: 6 });
+        if (isShowToast) {
+          this.toast.success('Product editted successfully!');
+          this.getProducts({ page: 1, size: 6 });
+        }
       },
       (err) => {
         this.toast.success('Product editted error!');

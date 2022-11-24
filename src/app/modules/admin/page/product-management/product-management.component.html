@@ -363,14 +363,11 @@
           <div class="col-4">
             <div class="product-item__price">
               <label class="label-text" for="discount">Discount</label>
-              <input
-                type="text"
-                pInputText
+              <p-inputNumber
                 id="discount"
-                required
-                autocomplete="off"
+                suffix="%"
                 [(ngModel)]="product.discount"
-              />
+              ></p-inputNumber>
             </div>
           </div>
           <div class="col-4">

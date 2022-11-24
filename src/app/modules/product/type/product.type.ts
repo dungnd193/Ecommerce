@@ -45,7 +45,7 @@ export interface IProduct {
   totalQuantity?: number;
   colors?: IColors[];
   category?: ICategory;
-  discount?: string;
+  discount?: number;
   quantity?: IQuantity[];
   viewCount?: number;
   status?: string;

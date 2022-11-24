@@ -38,9 +38,23 @@
         <form class="product-info" [formGroup]="productInfo">
           <h3 class="product-info__name">{{ product.name }}</h3>
           <div class="product-info__cost">
-            <span class="product-info__cost-text">{{
-              product.price | currency: "VND"
-            }}</span>
+            <div class="product-info__cost-text">
+              <span class="product-info__cost-text-new">
+                {{
+                  0.01 * (100 - product.discount!) * product.price!
+                    | currency: "VND"
+                }}
+              </span>
+              <span
+                class="product-info__cost-text-old"
+                *ngIf="product.discount! > 0"
+                [style.textDecoration]="
+                  product.discount! > 0 ? 'line-through' : 'none'
+                "
+              >
+                ({{ product.price | currency: "VND" }})
+              </span>
+            </div>
             <div class="product-info__cost-rating">
               <!-- <p-rating
                 [readonly]="true"

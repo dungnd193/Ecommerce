@@ -14,22 +14,46 @@ export class ShopService {
   ) {}
   private productsBS = new BehaviorSubject<IProduct[]>([]);
   private totalProductsBS = new BehaviorSubject<number>(0);
+
   get products$() {
     return this.productsBS.asObservable();
   }
   get totalProducts$() {
     return this.totalProductsBS.asObservable();
   }
-  getProducts({ page, size, sort, orderBy }: IGetProducts) {
-    this.shopApiService.getProducts({ page, size, sort, orderBy }).subscribe(
-      (data) => {
-        this.productsBS.next(data.content);
-        this.totalProductsBS.next(data.pageable.total);
-      },
-      (err) => {
-        this.toast.error('Fetching data error!');
-      }
-    );
+
+  getProducts({
+    page,
+    size,
+    sort,
+    orderBy,
+    colorId,
+    categoryId,
+    name,
+    start,
+    end,
+  }: IGetProducts) {
+    this.shopApiService
+      .getProducts({
+        page,
+        size,
+        sort,
+        orderBy,
+        colorId,
+        categoryId,
+        name,
+        start,
+        end,
+      })
+      .subscribe(
+        (data) => {
+          this.productsBS.next(data.content);
+          this.totalProductsBS.next(data.pageable.total);
+        },
+        (err) => {
+          this.toast.error('Fetching data error!');
+        }
+      );
   }
   getProductByPrice(start: number, end: number) {
     this.shopApiService.getProductByPrice(start, end).subscribe(

@@ -29,6 +29,9 @@
   .p-galleria-item-next-icon {
     color: #a7a7a7;
   }
+  .p-galleria-item-nav {
+    transform: translateY(-50%);
+  }
   .p-link:focus,
   .p-rating .p-rating-icon:focus {
     box-shadow: none;
@@ -86,8 +89,8 @@
   &__title {
     color: #29282d;
     font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 10px;
+    font-weight: 500;
+    margin: 0;
   }
   &__cost {
     display: flex;
@@ -97,7 +100,15 @@
     &-text {
       color: #29282d;
       font-size: 18px;
-      font-weight: 300;
+      &-old {
+        color: #ababab;
+        font-weight: 500;
+      }
+      &-new {
+        color: #29282d;
+        font-weight: 500;
+        margin-right: 10px;
+      }
     }
     &-rating {
       display: flex;
@@ -131,6 +142,7 @@
       color: #8d8d8d;
       font-size: 16px;
       text-transform: capitalize;
+      margin: 0;
     }
   }
   &__group {

@@ -87,17 +87,24 @@ export class ProductComponent implements OnInit {
 
     this.productService.getProduct(this.id);
     this.productService.getProductFeedback(this.id);
-    // const product = { ...this.product, viewCount: this.product.viewCount! + 1 };
-    // this.productManagementService.editProduct(product);
 
     this.productService.product$.subscribe((data) => {
       this.product = data;
       this.thumbnailImgList = this.product.nameUrlImage || [];
+      if (Object.keys(data).length) {
+        const product = { ...data, viewCount: data.viewCount! + 1 };
+        console.log(data);
+        this.productManagementService.editProduct(product, false);
+      }
     });
     this.productService.productFeedback$.subscribe(
       (data) => ((this.feedbackList = data), console.log(data))
     );
 
     this.selectedSize = this.sizes[1];
+  }
+
+  ngOnDestroy(): void {
+    this.thumbnailImgList = [];
   }
 }
