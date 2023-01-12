@@ -1,24 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthenticationService } from 'app/modules/authentication/service/authentication.service';
+import { Router } from '@angular/router';
+import { AdminService } from '../../services/AdminService/admin.service';
 
+enum ERole {
+  ROLE_ADMIN,
+  ROLE_USER,
+}
 @Component({
   selector: 'app-login',
   templateUrl: './admin-login.component.html',
   styleUrls: ['./admin-login.component.scss'],
 })
 export class AdminLoginComponent implements OnInit {
-  constructor(private authService: AuthenticationService) {}
+  constructor(private adminService: AdminService, private router: Router) {}
   showPassword: boolean = false;
   formLogin: FormGroup = new FormGroup({
-    userNameOrEmailAddress: new FormControl('', [Validators.required]),
+    username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
-    rememberMe: new FormControl(false),
   });
   onSubmit() {
     if (this.formLogin.valid) {
-      this.authService.logIn(this.formLogin.value);
+      console.log(this.formLogin.value);
+      this.adminService.adminLogin(this.formLogin.value);
     }
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const roles = localStorage.getItem('role')!;
+    const accessToken = localStorage.getItem('accessToken')!;
+    const isAdmin = roles?.includes(ERole[ERole.ROLE_ADMIN]);
+    if (isAdmin && accessToken) {
+      this.router.navigate(['/admin/dashboard']);
+    }
+  }
 }

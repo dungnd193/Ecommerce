@@ -58,12 +58,13 @@
       type="text"
       matInput
       required
-      formControlName="phone"
+      formControlName="phoneNumber"
       autocomplete="off"
     />
     <mat-error
       *ngIf="
-        formRegister.get('phone')?.invalid || formRegister.get('phone')?.touched
+        formRegister.get('phoneNumber')?.invalid ||
+        formRegister.get('phoneNumber')?.touched
       "
     >
       Phone number is <strong>invalid</strong>

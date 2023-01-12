@@ -1,9 +1,18 @@
 import { Injectable } from '@angular/core';
-import { ILoginRequest, IRegisterRequest } from '../type/authentication.type';
-import { AuthenticationApiService } from './authentication-api.service';
+import { Router } from '@angular/router';
+import jwt_decode from 'jwt-decode';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
-import { Router } from '@angular/router';
+import { ILoginRequest, IRegisterRequest } from '../type/authentication.type';
+import { AuthenticationApiService } from './authentication-api.service';
+
+interface IAccessTokenDecoded {
+  exp: number;
+  iat: number;
+  role: string;
+  username: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -27,9 +36,10 @@ export class AuthenticationService {
   logIn(payload: ILoginRequest) {
     return this.authApiService.logIn(payload).subscribe(
       (data) => {
-        localStorage.setItem('accessToken', data['x-access-token']);
-        localStorage.setItem('role', JSON.stringify(data.roles));
-        localStorage.setItem('X-Account-Id', JSON.stringify(data.userId));
+        console.log(data);
+        const { role } = jwt_decode(data.accessToken) as IAccessTokenDecoded;
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('role', role);
         this.toastr.success('Login Successfully!');
         this.router.navigate(['/home']);
       },
@@ -48,6 +58,9 @@ export class AuthenticationService {
     );
   }
   loggedIn() {
-    return !!localStorage.getItem('accessToken');
+    return (
+      localStorage.getItem('accessToken') &&
+      localStorage.getItem('role') === 'ROLE_USER'
+    );
   }
 }

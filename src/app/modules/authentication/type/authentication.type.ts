@@ -4,15 +4,12 @@ export interface ILoginRequest {
 }
 
 export interface ILoginResponse {
-  roles: string[];
-  userId: number;
-  'x-access-token': string;
-  'x-refresh-token': string;
+  accessToken: string;
 }
 
 export interface IRegisterRequest {
   username: string;
   password: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
 }

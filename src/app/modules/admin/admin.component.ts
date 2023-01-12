@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 
+enum ERole {
+  ROLE_ADMIN,
+  ROLE_USER,
+}
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -11,7 +15,9 @@ export class AdminComponent implements OnInit {
   isShowNotify = false;
   isShowComment = false;
   items!: MenuItem[];
-
+  isAdminLoggedIn = localStorage
+    .getItem('role')!
+    ?.includes(ERole[ERole.ROLE_ADMIN]);
   ngOnInit(): void {
     this.items = [
       {
@@ -55,5 +61,10 @@ export class AdminComponent implements OnInit {
         ],
       },
     ];
+  }
+  ngDoCheck(): void {
+    this.isAdminLoggedIn = localStorage
+      .getItem('role')!
+      ?.includes(ERole[ERole.ROLE_ADMIN]);
   }
 }

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminGuard } from './core/guard/admin/admin.guard';
+import { AuthGuard } from './core/guard/auth/auth.guard';
 import { UserGuard } from './core/guard/user/user.guard';
 import { ErrorPageComponent } from './modules/error-page/error-page.component';
 
@@ -11,6 +12,7 @@ const routes: Routes = [
       import('app/modules/authentication/authentication.module').then(
         (m) => m.AuthenticationModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: 'home',

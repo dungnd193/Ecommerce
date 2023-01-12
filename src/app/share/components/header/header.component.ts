@@ -13,10 +13,10 @@ export class HeaderComponent implements OnInit {
   constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
-    this.cartService.getCartProducts();
+    // this.cartService.getCartProducts();
     this.pathName = window.location.pathname.split('/')[1];
-    this.cartService.cartProducts$.subscribe((data) => {
-      this.cartProductsNumber = data.length;
-    });
+    // this.cartService.cartProducts$.subscribe((data) => {
+    //   this.cartProductsNumber = data.length;
+    // });
   }
 }

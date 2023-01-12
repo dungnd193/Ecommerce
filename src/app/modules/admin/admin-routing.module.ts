@@ -12,10 +12,26 @@ const routes: Routes = [
     path: '',
     component: AdminComponent,
     children: [
-      { path: 'login', component: AdminLoginComponent },
-      { path: 'dashboard', component: AdminDashboardComponent },
-      { path: 'product-management', component: ProductManagementComponent },
-      { path: 'user-management', component: UserManagementComponent },
+      {
+        path: 'login',
+        component: AdminLoginComponent,
+        // canActivate: [AdminGuard],
+      },
+      {
+        path: 'dashboard',
+        component: AdminDashboardComponent,
+        canActivate: [AdminGuard],
+      },
+      {
+        path: 'product-management',
+        component: ProductManagementComponent,
+        canActivate: [AdminGuard],
+      },
+      {
+        path: 'user-management',
+        component: UserManagementComponent,
+        canActivate: [AdminGuard],
+      },
     ],
   },
 ];

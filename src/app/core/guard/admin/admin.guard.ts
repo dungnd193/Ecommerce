@@ -15,12 +15,14 @@ export class AdminGuard implements CanActivate {
     private authService: AuthenticationService
   ) {}
   canActivate(): boolean {
-    const roles = JSON.parse(localStorage.getItem('role')!);
-    const isAdmin = roles.includes(ERole[ERole.ROLE_ADMIN]);
-    if (isAdmin) {
+    const roles = localStorage.getItem('role')!;
+    const accessToken = localStorage.getItem('accessToken')!;
+    const isAdmin = roles?.includes(ERole[ERole.ROLE_ADMIN]);
+    if (isAdmin && accessToken) {
+      // this.router.navigate(['/admin/dashboard']);
       return true;
     } else {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/admin/login']);
       return false;
     }
   }

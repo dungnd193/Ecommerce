@@ -17,7 +17,7 @@ export class AuthenticationApiService {
   constructor(private http: HttpClient) {}
 
   logIn({ username, password }: ILoginRequest): Observable<ILoginResponse> {
-    return this.http.post<ILoginResponse>(`${this.API_URL}/api/login`, {
+    return this.http.post<ILoginResponse>(`${this.API_URL}/auth/signin`, {
       username,
       password,
     });
@@ -27,13 +27,13 @@ export class AuthenticationApiService {
     username,
     password,
     email,
-    phone,
+    phoneNumber,
   }: IRegisterRequest): Observable<any> {
-    return this.http.post<any>(`${this.API_URL}/api/signup`, {
+    return this.http.post<any>(`${this.API_URL}/auth/signup`, {
       username,
       password,
       email,
-      phone,
+      phoneNumber,
     });
   }
 }
