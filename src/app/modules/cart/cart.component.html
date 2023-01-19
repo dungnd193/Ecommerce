@@ -418,22 +418,19 @@
                 color: rgba(0, 0, 0, 0.54);
               "
             >
-              <span>Color: {{ product.color }}</span>
-              <span>Color: {{ product.size }}</span>
+              <span>Color: {{ handleConvertColor(product.colorId) }}</span>
+              <span>Size: {{ handleConvertSize(product.sizeId) }}</span>
             </div>
           </td>
           <td>
             <img
-              [src]="
-                'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/' +
-                product.urlImage
-              "
+              [src]="'http://localhost:8080/images/' + product.nameUrlImage[0]"
               [alt]="product.name"
               width="100"
               class="shadow-4"
             />
           </td>
-          <td>{{ product.priceOut | currency: "VND" }}</td>
+          <td>{{ product.price | currency : "VND" }}</td>
           <td>
             <div class="cart-quantity">
               <p-button
@@ -448,7 +445,7 @@
             </div>
           </td>
           <td>
-            {{ product.priceOut * product.quantity | currency: "VND" }}
+            {{ product.price * product.quantity | currency : "VND" }}
           </td>
           <td>
             <p-button
@@ -474,9 +471,9 @@
                 <div class="cart-clear" (click)="handleClearShoppingCart()">
                   <span>CLEAR SHOPPING CART</span>
                 </div>
-                <div class="cart-update">
+                <!-- <div class="cart-update">
                   <span>UPDATE SHOPPING CART</span>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="col-lg-6">
@@ -505,7 +502,7 @@
                   TET2022: Discount 30%
                 </span>
                 <span *ngIf="discount" class="coupon-code__apply"
-                  >Coupon: "{{ "FREE50" }}" is applied!</span
+                  >Coupon: "{{ this.voucher }}" is applied!</span
                 >
                 <button class="coupon-code__btn" (click)="handleApplyVoucher()">
                   APPLY
@@ -519,26 +516,26 @@
                 <div class="payment__details">
                   <span class="payment__details-text">Subtotal</span>
                   <div class="payment__details-price">
-                    {{ subTotal | currency: "VND" }}
+                    {{ subTotal | currency : "VND" }}
                   </div>
                 </div>
                 <div class="payment__details">
                   <span class="payment__details-text">Shipping cost</span>
                   <div class="payment__details-price">
-                    {{ 0 | currency: "VND" }}
+                    {{ 0 | currency : "VND" }}
                   </div>
                 </div>
                 <div class="payment__details">
                   <span class="payment__details-text">Voucher</span>
                   <div class="payment__details-price">
                     <span *ngIf="discount">-</span>
-                    {{ discount * subTotal | currency: "VND" }}
+                    {{ discount * subTotal | currency : "VND" }}
                   </div>
                 </div>
                 <div class="payment__details">
                   <span class="payment__details-text">Total</span>
                   <div class="payment__details-price">
-                    {{ subTotal - discount * subTotal | currency: "VND" }}
+                    {{ subTotal - discount * subTotal | currency : "VND" }}
                   </div>
                 </div>
                 <button class="payment__details-btn" routerLink="/checkout">

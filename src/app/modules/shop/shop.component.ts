@@ -17,6 +17,7 @@ import { Paginator } from 'primeng/paginator';
 export class ShopComponent implements OnInit {
   constructor(
     private shopService: ShopService,
+    private cartService: CartService,
     private productManagementService: ProductManagementService,
     private toast: ToastrService
   ) {}
@@ -154,6 +155,10 @@ export class ShopComponent implements OnInit {
   }
   handleShowMoreCategories() {
     this.isShowAllCategories = !this.isShowAllCategories;
+  }
+  handleAddProductToCart(product: IProduct) {
+    this.cartService.addProductToCart(product);
+    console.log(product);
   }
   ngOnInit(): void {
     this.productManagementService.getColors();

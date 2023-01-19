@@ -61,14 +61,24 @@ export class ProductComponent implements OnInit {
   }
 
   handleAddProduct() {
-    console.log({
+    const colorId = this.productInfo.get('colorNSize')?.value?.colorId;
+    const sizeId = this.productInfo.get('colorNSize')?.value?.sizeId;
+    if (!colorId || !sizeId) {
+      this.toastr.error('Please select color and size');
+      return;
+    }
+    console.log(this.product);
+    const product = {
       id: this.product.id,
       name: this.product.name,
       description: this.product.description,
-      colorId: this.productInfo.get('colorNSize')!.value.colorId,
-      sizeId: this.productInfo.get('colorNSize')!.value.sizeId,
-      priceOut: this.product.price,
-    });
+      colorId,
+      sizeId,
+      price: this.product.price,
+      nameUrlImage: this.product.nameUrlImage,
+      quantity: 1,
+    };
+    this.cartService.addProductToCart(product);
   }
 
   handleAddReview() {

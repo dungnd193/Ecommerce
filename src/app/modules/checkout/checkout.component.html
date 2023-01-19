@@ -13,41 +13,21 @@
               <div class="col-12">
                 <h2 class="contact-information__title">Contact Information</h2>
               </div>
-              <div class="col-md-6">
+              <div class="col-12">
                 <div class="contact-information__block">
                   <h3 class="contact-information__heading">
-                    First name<span style="color: red">*</span>
+                    Name<span style="color: red">*</span>
                   </h3>
                   <input
                     autocomplete="off"
                     type="text"
                     class="contact-information__input"
-                    placeholder="First name"
-                    formControlName="firstName"
+                    placeholder="Name"
+                    formControlName="user_name"
                   />
                   <p
                     style="color: red"
-                    *ngIf="(formContact.get('firstName')?.invalid || formContact.get('firstName')?.errors?.['required']) && (formContact.get('firstName')?.dirty || formContact.get('firstName')?.touched)"
-                  >
-                    Không để trống trường này!
-                  </p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="contact-information__block">
-                  <h3 class="contact-information__heading">
-                    Last name<span style="color: red">*</span>
-                  </h3>
-                  <input
-                    autocomplete="off"
-                    type="text"
-                    class="contact-information__input"
-                    placeholder="Last name"
-                    formControlName="lastName"
-                  />
-                  <p
-                    style="color: red"
-                    *ngIf="(formContact.get('lastName')?.invalid || formContact.get('lastName')?.errors?.['required']) && (formContact.get('lastName')?.dirty || formContact.get('lastName')?.touched)"
+                    *ngIf="(formContact.get('user_name')?.invalid || formContact.get('user_name')?.errors?.['required']) && (formContact.get('user_name')?.dirty || formContact.get('user_name')?.touched)"
                   >
                     Không để trống trường này!
                   </p>
@@ -68,46 +48,6 @@
                   <p
                     style="color: red"
                     *ngIf="(formContact.get('address')?.invalid || formContact.get('address')?.errors?.['required']) && (formContact.get('address')?.dirty || formContact.get('address')?.touched)"
-                  >
-                    Không để trống trường này!
-                  </p>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="contact-information__block">
-                  <h3 class="contact-information__heading">
-                    City<span style="color: red">*</span>
-                  </h3>
-                  <input
-                    autocomplete="off"
-                    type="text"
-                    class="contact-information__input"
-                    placeholder="City"
-                    formControlName="city"
-                  />
-                  <p
-                    style="color: red"
-                    *ngIf="(formContact.get('city')?.invalid || formContact.get('city')?.errors?.['required']) && (formContact.get('city')?.dirty || formContact.get('city')?.touched)"
-                  >
-                    Không để trống trường này!
-                  </p>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="contact-information__block">
-                  <h3 class="contact-information__heading">
-                    Country/State<span style="color: red">*</span>
-                  </h3>
-                  <input
-                    autocomplete="off"
-                    type="text"
-                    class="contact-information__input"
-                    placeholder="Country/State"
-                    formControlName="country"
-                  />
-                  <p
-                    style="color: red"
-                    *ngIf="(formContact.get('country')?.invalid || formContact.get('country')?.errors?.['required']) && (formContact.get('country')?.dirty || formContact.get('country')?.touched)"
                   >
                     Không để trống trường này!
                   </p>
@@ -143,11 +83,11 @@
                     type="text"
                     class="contact-information__input"
                     placeholder="Phone"
-                    formControlName="phoneNumber"
+                    formControlName="phone"
                   />
                   <p
                     style="color: red"
-                    *ngIf="(formContact.get('phoneNumber')?.invalid || formContact.get('phoneNumber')?.errors?.['required']) && (formContact.get('phoneNumber')?.dirty || formContact.get('phoneNumber')?.touched)"
+                    *ngIf="(formContact.get('phone')?.invalid || formContact.get('phone')?.errors?.['required']) && (formContact.get('phone')?.dirty || formContact.get('phone')?.touched)"
                   >
                     Không để trống trường này!
                   </p>
@@ -211,8 +151,8 @@
                         {{ product.name }}
                       </span>
                       <span class="your-order__product-price">
-                        {{ product.priceOut! | currency: "VND" }} x
-                        {{ product.quantity! }}
+                        {{ product.price | currency : "VND" }} x
+                        {{ product.quantity }}
                       </span>
                     </div>
                   </div>
@@ -221,7 +161,7 @@
                   <div class="your-order__heading">
                     <span class="your-order__heading-text">Subtotal</span>
                     <span class="your-order__heading-price">
-                      {{ subTotal | currency: "VND" }}
+                      {{ subTotal | currency : "VND" }}
                     </span>
                   </div>
                 </div>
@@ -229,7 +169,7 @@
                   <div class="your-order__heading">
                     <span class="your-order__heading-text">Shipping</span>
                     <span class="your-order__heading-price">
-                      {{ 0 | currency: "VND" }}
+                      {{ 0 | currency : "VND" }}
                     </span>
                   </div>
                 </div>
@@ -238,7 +178,7 @@
                     <span class="your-order__heading-text">Voucher</span>
                     <span class="your-order__heading-price">
                       <span *ngIf="discount">-</span>
-                      {{ discount * subTotal | currency: "VND" }}
+                      {{ discount * subTotal | currency : "VND" }}
                     </span>
                   </div>
                 </div>
@@ -249,7 +189,7 @@
                       class="your-order__heading-price"
                       style="color: #fe3e57; font-weight: bold"
                     >
-                      {{ subTotal - discount * subTotal | currency: "VND" }}
+                      {{ subTotal - discount * subTotal | currency : "VND" }}
                     </span>
                   </div>
                 </div>
@@ -262,22 +202,12 @@
                 <h3 class="payment-method__title">Payment Method</h3>
               </div>
               <div class="col-12">
-                <mat-radio-group formControlName="paymentMethod">
+                <mat-radio-group formControlName="payment_method">
                   <div class="payment-method__block">
                     <div class="payment-method__group">
                       <mat-radio-button value="check-payment"
                         >Check Payment</mat-radio-button
                       >
-                      <!-- <input
-                      autocomplete="off"
-                      hidden
-                      type="checkbox"
-                      id="check-payment"
-                      class="payment-method__checkbox"
-                    />
-                    <label for="check-payment" class="payment-method__text"
-                      >Check Payment</label
-                    > -->
                     </div>
                     <p class="payment-method__description">
                       Lorem ipsum dolor sit amet, constetur adipiscing elit, sed
@@ -287,16 +217,6 @@
                   <div class="payment-method__block">
                     <div class="payment-method__group">
                       <mat-radio-button value="paypal">Paypal</mat-radio-button>
-                      <!-- <input
-                      autocomplete="off"
-                      hidden
-                      type="checkbox"
-                      id="paypal"
-                      class="payment-method__checkbox"
-                    />
-                    <label for="paypal" class="payment-method__text"
-                      >Paypal</label
-                    > -->
                     </div>
                     <p class="payment-method__description">
                       Lorem ipsum dolor sit amet, constetur adipiscing elit, sed

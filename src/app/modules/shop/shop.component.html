@@ -8,8 +8,8 @@
             <p-slider [(ngModel)]="rangeValues" [range]="true"></p-slider>
             <div class="side-bar__filter-price-info">
               <h3 class="side-bar__filter-price-range">
-                Price" {{ rangeValues[0] * priceUnit | currency: "VND" }} -
-                {{ rangeValues[1] * priceUnit | currency: "VND" }}
+                Price" {{ rangeValues[0] * priceUnit | currency : "VND" }} -
+                {{ rangeValues[1] * priceUnit | currency : "VND" }}
               </h3>
               <button
                 pButton
@@ -142,11 +142,12 @@
                   </div>
                   <div class="product-list-action">
                     <span class="product-price">
-                      {{ product.price | currency: "VND" }}
+                      {{ product.price | currency : "VND" }}
                     </span>
                     <p-button
                       icon="pi pi-shopping-cart"
                       label="Add to Cart"
+                      (Click)="handleAddProductToCart(product)"
                       [disabled]="product.status === 'OUTOFSTOCK'"
                     ></p-button>
                     <span [class]="'product-badge status-' + 'instock'">
@@ -196,10 +197,11 @@
                   </div>
                   <div class="product-grid-item-bottom">
                     <span class="product-price">
-                      {{ product.price | currency: "VND" }}
+                      {{ product.price | currency : "VND" }}
                     </span>
                     <p-button
                       icon="pi pi-shopping-cart"
+                      (click)="handleAddProductToCart(product)"
                       [disabled]="product.status === 'OUTOFSTOCK'"
                     ></p-button>
                   </div>

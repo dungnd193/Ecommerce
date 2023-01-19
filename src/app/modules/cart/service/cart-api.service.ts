@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
-import { IProduct } from '../type/cart.type';
+import { ICartProduct } from '../type/cart.type';
 
 @Injectable({
   providedIn: 'root',
@@ -14,13 +14,13 @@ export class CartApiService {
   getCartProducts(): Observable<any> {
     return this.http.get(`${this.API_URL}/cart`);
   }
-  addProductToCart(product: IProduct): Observable<IProduct> {
+  addProductToCart(product: ICartProduct): Observable<ICartProduct> {
     return this.http.post(`${this.API_URL}/cart`, product);
   }
-  removeProduct(product: IProduct): Observable<IProduct> {
+  removeProduct(product: ICartProduct): Observable<ICartProduct> {
     return this.http.delete(`${this.API_URL}/cart/${product.id}`);
   }
-  updateProduct(product: IProduct): Observable<IProduct> {
+  updateProduct(product: ICartProduct): Observable<ICartProduct> {
     return this.http.put(`${this.API_URL}/cart/${product.id}`, product);
   }
 }

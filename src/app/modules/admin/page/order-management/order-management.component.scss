@@ -114,11 +114,11 @@
     font-weight: 700;
     font-size: 12px;
     letter-spacing: 0.3px;
-    &.role-basicuser {
+    &.status-basicuser {
       background: #c8e6c9;
       color: #256029;
     }
-    &.role-admin {
+    &.status-admin {
       background: #feedaf;
       color: #8a5340;
     }
@@ -158,10 +158,13 @@
   }
 }
 .user-item {
+  &__id,
   &__name,
   &__price,
+  &__phone,
+  &__payment,
   &__category {
-    font-weight: 300;
+    font-weight: 500;
     font-size: 14px;
   }
   &__img {

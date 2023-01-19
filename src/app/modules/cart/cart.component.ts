@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { combineLatest } from 'rxjs';
+import { ProductManagementService } from '../admin/services/ProductManagementService/product-management.service';
+import { IProduct } from '../shop/type/shop.type';
 import { CartService } from './service/cart.service';
-import { IProduct } from './type/cart.type';
+import { ICartProduct } from './type/cart.type';
+import { ICategories, IColors } from '../admin/type/product-management.type';
 
 @Component({
   selector: 'app-cart',
@@ -11,10 +15,13 @@ import { IProduct } from './type/cart.type';
 export class CartComponent implements OnInit {
   constructor(
     private cartService: CartService,
+    private productManagementService: ProductManagementService,
     private toastr: ToastrService
   ) {}
 
-  cartProductList: IProduct[] = [];
+  cartProductList: ICartProduct[] = [];
+  colorFilterList: IColors[] = [];
+  sizeFilterList: ICategories[] = [];
   subTotal: number = 0;
   discount: number = 0;
   voucher: string = '';
@@ -23,21 +30,21 @@ export class CartComponent implements OnInit {
     currency: 'VND',
   });
 
-  handleRemoveProduct(product: IProduct) {
+  handleRemoveProduct(product: ICartProduct) {
     this.cartService.removeProduct(product);
   }
-  handleIncreaseAmount(product: IProduct) {
+  handleIncreaseAmount(product: ICartProduct) {
     product.quantity!++;
     this.cartService.updateProductInCart(product);
   }
-  handleDecreaseAmount(product: IProduct) {
+  handleDecreaseAmount(product: ICartProduct) {
     if (product.quantity! > 1) {
       product.quantity!--;
       this.cartService.updateProductInCart(product);
     }
   }
   handleClearShoppingCart() {
-    this.cartService.clearShoppingCart(this.cartProductList);
+    this.cartService.clearShoppingCart();
   }
 
   handleApplyVoucher() {
@@ -57,17 +64,34 @@ export class CartComponent implements OnInit {
       }
     }
   }
+  handleConvertColor(colorId: string) {
+    return this.colorFilterList.find((item) => item.id === colorId)?.name;
+  }
+  handleConvertSize(sizeId: string) {
+    return this.sizeFilterList.find((item) => item.id === sizeId)?.name;
+  }
 
   ngOnInit(): void {
+    this.productManagementService.getColors();
+    this.productManagementService.getSizes();
     this.cartService.voucherBS = 0;
+
     this.cartService.cartProducts$.subscribe((data) => {
       this.cartProductList = data;
       this.subTotal = this.cartProductList.reduce(
         (total, currentValue) =>
-          total + currentValue.priceOut! * currentValue.quantity!,
+          total + currentValue.price! * currentValue.quantity!,
         0
       );
     });
+
     this.cartService.voucher$.subscribe((data) => (this.discount = data));
+
+    combineLatest(
+      this.productManagementService.colors$,
+      this.productManagementService.sizes$
+    ).subscribe((data) => {
+      (this.colorFilterList = data[0]), (this.sizeFilterList = data[1]);
+    });
   }
 }

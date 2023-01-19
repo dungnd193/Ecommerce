@@ -11,14 +11,14 @@ import { AdminLoginComponent } from './page/admin-login/admin-login.component';
 import { ProductManagementComponent } from './page/product-management/product-management.component';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-import { UserManagementComponent } from './page/user-management/user-management.component';
+import { OrderManagementComponent } from './page/order-management/order-management.component';
 @NgModule({
   declarations: [
     AdminComponent,
     AdminLoginComponent,
     AdminDashboardComponent,
     ProductManagementComponent,
-    UserManagementComponent,
+    OrderManagementComponent,
   ],
   imports: [
     ReactiveFormsModule,

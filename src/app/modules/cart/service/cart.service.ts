@@ -1,18 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
-import { IProduct } from '../type/cart.type';
-import { CartApiService } from './cart-api.service';
+import { ICartProduct } from '../type/cart.type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-  constructor(
-    private cartApiService: CartApiService,
-    private toast: ToastrService
-  ) {}
-  private cartProductsBS = new BehaviorSubject<IProduct[]>([]);
+  constructor(private toastr: ToastrService) {}
+  private cartProductsBS = new BehaviorSubject<ICartProduct[]>([]);
   private discount = new BehaviorSubject<number>(0);
   get cartProducts$() {
     return this.cartProductsBS.asObservable();
@@ -24,41 +20,43 @@ export class CartService {
     this.discount.next(value);
   }
   getCartProducts() {
-    this.cartApiService.getCartProducts().subscribe(
-      (data) => {
-        this.cartProductsBS.next(data);
-      },
-      (err) => {
-        this.toast.error('Fetching data error!');
+    const cartProducts =
+      JSON.parse(localStorage.getItem('cartProducts')!) || [];
+    this.cartProductsBS.next(cartProducts);
+  }
+  addProductToCart(product: ICartProduct) {
+    const cartProducts = this.cartProductsBS.getValue();
+    this.cartProductsBS.next([...cartProducts, product]);
+    localStorage.setItem(
+      'cartProducts',
+      JSON.stringify([...cartProducts, product])
+    );
+    this.toastr.success('Product successfully added');
+  }
+  removeProduct(product: ICartProduct) {
+    const cartProducts =
+      JSON.parse(localStorage.getItem('cartProducts')!) || [];
+
+    const restProducts = cartProducts.filter(
+      (item: ICartProduct) => item.id !== product.id
+    );
+    localStorage.setItem('cartProducts', JSON.stringify(restProducts));
+    this.cartProductsBS.next(restProducts);
+  }
+  clearShoppingCart() {
+    localStorage.setItem('cartProducts', JSON.stringify([]));
+    this.cartProductsBS.next([]);
+  }
+  updateProductInCart(product: ICartProduct) {
+    const cartProducts =
+      JSON.parse(localStorage.getItem('cartProducts')!) || [];
+    const newCartProducts = cartProducts.map((item: ICartProduct) => {
+      if (item.id === product.id) {
+        item.quantity = product.quantity;
       }
-    );
-  }
-  addProductToCart(product: IProduct) {
-    this.cartApiService.addProductToCart(product).subscribe(
-      (data) => {
-        const cartProductList = this.cartProductsBS.getValue();
-        this.cartProductsBS.next([...cartProductList, data]);
-        this.toast.success(`Add product: ${product.name} successfully!`);
-      },
-      (err) => this.toast.error('Faild to add product!')
-    );
-  }
-  removeProduct(product: IProduct) {
-    this.cartApiService.removeProduct(product).subscribe(
-      (data) => {
-        this.toast.success(`Delete product: ${product.name} successfully!`);
-        this.getCartProducts();
-      },
-      (err) => this.toast.error('Delete product error!')
-    );
-  }
-  clearShoppingCart(products: IProduct[]) {
-    products.map((product) => {
-      this.cartApiService.removeProduct(product).subscribe();
+      return item;
     });
-    this.getCartProducts();
-  }
-  updateProductInCart(product: IProduct) {
-    this.cartApiService.updateProduct(product).subscribe();
+    localStorage.setItem('cartProducts', JSON.stringify(newCartProducts));
+    this.cartProductsBS.next(newCartProducts);
   }
 }

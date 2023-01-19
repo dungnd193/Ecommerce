@@ -5,7 +5,7 @@ import { AdminComponent } from './admin.component';
 import { AdminDashboardComponent } from './page/admin-dashboard/admin-dashboard.component';
 import { AdminLoginComponent } from './page/admin-login/admin-login.component';
 import { ProductManagementComponent } from './page/product-management/product-management.component';
-import { UserManagementComponent } from './page/user-management/user-management.component';
+import { OrderManagementComponent } from './page/order-management/order-management.component';
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   {
@@ -28,8 +28,8 @@ const routes: Routes = [
         canActivate: [AdminGuard],
       },
       {
-        path: 'user-management',
-        component: UserManagementComponent,
+        path: 'order-management',
+        component: OrderManagementComponent,
         canActivate: [AdminGuard],
       },
     ],
