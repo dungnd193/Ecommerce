@@ -1,10 +1,22 @@
 <div class="content">
   <div class="container">
+    <div *ngIf="checkoutService.isOrderSuccess" class="order-completed">
+      <img
+        class="order-completed__img"
+        src="../../../assets/img/order.jpg"
+        alt=""
+      />
+      <h3 class="order-completed__title">Your order is completed!</h3>
+      <h3 class="order-completed__description">
+        You will be receiving a confirmation email with order details
+      </h3>
+    </div>
     <form
       action=""
       [formGroup]="formContact"
       (ngSubmit)="handleOrder()"
       class="form-checkout"
+      *ngIf="!checkoutService.isOrderSuccess"
     >
       <div class="row">
         <div class="col-lg-8">

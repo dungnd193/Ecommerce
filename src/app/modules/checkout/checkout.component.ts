@@ -12,7 +12,7 @@ import { CheckoutService } from './service/checkout.service';
 })
 export class CheckoutComponent implements OnInit {
   constructor(
-    private checkoutService: CheckoutService,
+    public checkoutService: CheckoutService,
     private cartService: CartService,
     private toast: ToastrService
   ) {}
@@ -40,6 +40,7 @@ export class CheckoutComponent implements OnInit {
         ...this.formContact.value,
         status: 'NEW_ORDER',
         order_list,
+        discount: this.discount,
       };
       this.checkoutService.addOrder(params);
     } else {

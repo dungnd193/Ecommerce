@@ -53,7 +53,7 @@ export class CartComponent implements OnInit {
         this.cartService.voucherBS = 0.5;
         break;
       }
-      case 'TET2022': {
+      case 'TET2023': {
         this.cartService.voucherBS = 0.3;
         break;
       }

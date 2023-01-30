@@ -1,4 +1,9 @@
 :host ::ng-deep {
+  .p-datatable.p-datatable-hoverable-rows
+    .p-datatable-tbody
+    > tr:not(.p-highlight):hover {
+    background: #ebebeb7d;
+  }
   .p-toolbar {
     background: #f8f9fa;
     border: 1px solid #dee2e6;
@@ -114,11 +119,13 @@
     font-weight: 700;
     font-size: 12px;
     letter-spacing: 0.3px;
-    &.status-basicuser {
+    &.status-basicuser,
+    &.method-paypal {
       background: #c8e6c9;
       color: #256029;
     }
-    &.status-admin {
+    &.status-admin,
+    &.method-check-payment {
       background: #feedaf;
       color: #8a5340;
     }
@@ -212,6 +219,20 @@
   }
 }
 
+th,
+td {
+  border-right: 1px solid #e9ecef !important;
+  border-left: 1px solid #e9ecef !important;
+}
+
+.search-input {
+  width: 350px;
+  margin-right: 20px;
+}
+.line_through {
+  text-decoration: line-through;
+  color: #9b9b9b;
+}
 @media screen and (max-width: 960px) {
   :host ::ng-deep {
     .p-datatable {

@@ -19,6 +19,10 @@ export class CartService {
   set voucherBS(value: number) {
     this.discount.next(value);
   }
+
+  set cartProducts(products: ICartProduct[]) {
+    this.cartProductsBS.next(products);
+  }
   getCartProducts() {
     const cartProducts =
       JSON.parse(localStorage.getItem('cartProducts')!) || [];
@@ -38,7 +42,7 @@ export class CartService {
       JSON.parse(localStorage.getItem('cartProducts')!) || [];
 
     const restProducts = cartProducts.filter(
-      (item: ICartProduct) => item.id !== product.id
+      (item: ICartProduct) => item.product_id !== product.product_id
     );
     localStorage.setItem('cartProducts', JSON.stringify(restProducts));
     this.cartProductsBS.next(restProducts);
@@ -51,7 +55,7 @@ export class CartService {
     const cartProducts =
       JSON.parse(localStorage.getItem('cartProducts')!) || [];
     const newCartProducts = cartProducts.map((item: ICartProduct) => {
-      if (item.id === product.id) {
+      if (item.product_id === product.product_id) {
         item.quantity = product.quantity;
       }
       return item;

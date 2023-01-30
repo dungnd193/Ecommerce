@@ -17,14 +17,12 @@ import { ICategories, IColors } from '../../type/product-management.type';
 })
 export class OrderManagementComponent implements OnInit {
   @ViewChild('userTable') userTable!: Table;
-  userDialog!: boolean;
   orders!: IOrder[];
-  selectedUsers?: IUserInfo[] | null;
   submitted!: boolean;
   colorFilterList: IColors[] = [];
   sizeFilterList: ICategories[] = [];
-  roles = [
-    { label: 'NEW_ORDER', value: 'NEW_ORDER' },
+  statuses = [
+    { label: 'NEW ORDER', value: 'NEW_ORDER' },
     { label: 'DELIVERING', value: 'DELIVERING' },
     { label: 'COMPLETED', value: 'COMPLETED' },
     { label: 'CANCELLED', value: 'CANCELLED' },
@@ -54,7 +52,6 @@ export class OrderManagementComponent implements OnInit {
     );
   }
   handleChangeOrderStatus(event: any, id: string) {
-    console.log(event.value);
     this.orderService.updateOrderStatus(id, event.value);
   }
   ngOnInit(): void {

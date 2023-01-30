@@ -2,38 +2,13 @@
   <div class="col-12">
     <p-toast></p-toast>
     <div class="card">
-      <p-toolbar styleClass="mb-4">
-        <ng-template pTemplate="left">
-          <span class="p-input-icon-left">
-            <i class="pi pi-search"></i>
-            <input type="text" pInputText placeholder="Search" />
-          </span>
-        </ng-template>
-
-        <ng-template pTemplate="right">
-          <button
-            pButton
-            pRipple
-            label="Export"
-            icon="pi pi-upload"
-            class="p-button-help"
-          ></button>
-        </ng-template>
-      </p-toolbar>
-
       <p-table
         #userTable
         [value]="orders"
         [rows]="10"
         [paginator]="true"
-        [globalFilterFields]="[
-          'name',
-          'country.name',
-          'representative.name',
-          'status'
-        ]"
+        [globalFilterFields]="['phone', 'id', 'user_name', 'email']"
         responsiveLayout="scroll"
-        [(selection)]="selectedUsers"
         [rowHover]="true"
         dataKey="id"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -42,29 +17,51 @@
         <ng-template pTemplate="caption">
           <div class="management-user">
             <h5 class="management-user__text">Order Management</h5>
-            <span class="p-input-icon-left">
-              <i class="pi pi-search"></i>
-              <input
-                pInputText
-                type="text"
-                placeholder="Search by name..."
-                (input)="handleFilterBlobal($event)"
-              />
-            </span>
+            <div>
+              <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input
+                  pInputText
+                  type="text"
+                  placeholder="Search by id, name, phone number, email"
+                  (input)="handleFilterBlobal($event)"
+                  class="search-input"
+                />
+              </span>
+              <!-- <button
+                pButton
+                pRipple
+                label="Export"
+                icon="pi pi-upload"
+                class="p-button-help"
+              ></button> -->
+            </div>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
-            <th style="width: 150px">Order Id</th>
-            <th>Customer</th>
-            <th style="width: 200px">Address</th>
-            <th style="width: 150px">Email</th>
-            <th style="width: 150px">Phone Number</th>
+            <th pSortableColumn="id" style="width: 150px; text-align: center">
+              Order Id
+            </th>
+            <th pSortableColumn="user_name" style="text-align: center">
+              Customer
+            </th>
+            <th style="width: 200px; text-align: center">Address</th>
+            <th pSortableColumn="email" style="width: 150px">Email</th>
+            <th
+              style="width: 150px; text-align: center"
+              pSortableColumn="phone"
+            >
+              Phone Number
+            </th>
             <th>Detail</th>
-            <th pSortableColumn="price" style="width: 150px">
+            <th
+              pSortableColumn="price"
+              style="width: 150px; text-align: center"
+            >
               Price <p-sortIcon field="price"></p-sortIcon>
             </th>
-            <th style="width: 150px">Delivery Status</th>
+            <th style="width: 150px; text-align: center">Delivery Status</th>
             <th style="width: 160px">Payment Method</th>
           </tr>
         </ng-template>
@@ -78,7 +75,7 @@
               {{ order.address }}
             </td>
             <td class="user-item__category">{{ order.email }}</td>
-            <td class="user-item__phone">
+            <td class="user-item__phone" style="text-align: center">
               {{ order.phone }}
             </td>
             <td>
@@ -87,7 +84,7 @@
                   - {{ order_item.name }}
                   <br />
                   <strong>Color:{{ " " }}</strong
-                  >{{ handleConvertColor(order_item.colorId) }}
+                  >{{ handleConvertColor(order_item.colorId) }} ---
                   <strong>Size:{{ " " }}</strong
                   >{{ handleConvertSize(order_item.sizeId) }}
                   <br />
@@ -96,14 +93,22 @@
                 </h4>
               </ng-container>
             </td>
-            <td class="user-item__price">
-              {{ handleTotalPrice(order.order_list) | currency : "VND" }}
+            <td class="user-item__price" style="text-align: center">
+              <span [class.line_through]="order.discount">
+                {{ handleTotalPrice(order.order_list) | currency : "VND" }}
+              </span>
+              <span *ngIf="order.discount">
+                {{
+                  handleTotalPrice(order.order_list) * order.discount
+                    | currency : "VND"
+                }}
+              </span>
             </td>
             <td>
               <p-dropdown
                 inputId="orderStatus"
                 placeholder="Select"
-                [options]="roles"
+                [options]="statuses"
                 [(ngModel)]="order.status"
                 (onChange)="handleChangeOrderStatus($event, order.id)"
               >
@@ -116,7 +121,15 @@
                 </ng-template>
               </p-dropdown>
             </td>
-            <td class="user-item__payment">{{ order.payment_method }}</td>
+            <td class="user-item__payment" style="text-align: center">
+              <span
+                [class]="
+                  'user-badge method-' + order.payment_method.toLowerCase()
+                "
+              >
+                {{ order.payment_method.replace("-", " ") }}
+              </span>
+            </td>
           </tr>
         </ng-template>
         <ng-template pTemplate="summary">
