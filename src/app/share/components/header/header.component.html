@@ -21,7 +21,13 @@
         </mat-selection-list>
       </div>
       <div class="col-md-2 flex align-center">
-        <mat-icon routerLink="user"> person_outline </mat-icon>
+        <ng-container *ngIf="!isUserLoggedIn; else userMenuElse">
+          <mat-icon routerLink="user">person_outline</mat-icon>
+        </ng-container>
+        <ng-template #userMenuElse>
+          <p-menubar [model]="userMenu">
+          </p-menubar>
+        </ng-template>
         <mat-icon
           [matBadge]="cartProductsNumber"
           matBadgeColor="accent"

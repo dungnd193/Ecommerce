@@ -3,12 +3,14 @@
     <!-- opened -->
     <mat-drawer #drawer mode="side" class="side-bar">
       <div class="side-bar__avatar">
-        <p-avatar
-          image="../../../assets/img/avatar-default.jpg"
-          styleClass="mr-2"
-          size="large"
-          shape="circle"
-        ></p-avatar>
+        <p-menubar [model]="logout">
+          <p-avatar
+            image="../../../assets/img/avatar-default.jpg"
+            styleClass="mr-2"
+            size="large"
+            shape="circle"
+          ></p-avatar>
+        </p-menubar>
         <h3 class="side-bar__avatar-text">Welcom Admin!</h3>
       </div>
       <p-divider></p-divider>

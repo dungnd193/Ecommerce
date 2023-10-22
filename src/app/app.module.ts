@@ -10,6 +10,7 @@ import { MaterialModule } from './core/material/material.module';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from './core/service/interceptor/interceptor.service';
+import { PrimeModule } from './core/prime/prime.module';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, FooterComponent],
@@ -19,6 +20,7 @@ import { InterceptorService } from './core/service/interceptor/interceptor.servi
     BrowserAnimationsModule,
     HttpClientModule,
     MaterialModule,
+    PrimeModule,
     ToastrModule.forRoot({
       timeOut: 2000,
       progressBar: true,
