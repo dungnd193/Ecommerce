@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDrawer } from '@angular/material/sidenav';
+import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 
 enum ERole {
@@ -11,14 +13,32 @@ enum ERole {
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
-  constructor() {}
+  constructor(
+    private router: Router
+  ) {}
+  @ViewChild('drawer') drawer?: MatDrawer;
   isShowNotify = false;
   isShowComment = false;
   items!: MenuItem[];
+  logout!: MenuItem[];
   isAdminLoggedIn = localStorage
     .getItem('role')!
     ?.includes(ERole[ERole.ROLE_ADMIN]);
   ngOnInit(): void {
+    this.logout = [
+      {
+        label: '',
+        items: [
+          { label: 'Logout', command: () => {
+            localStorage.removeItem('role')
+            localStorage.removeItem('accessToken')
+            this.router.navigate(['/admin/login']);
+            this.drawer?.close();
+          }},
+        ],
+        icon: ''
+      }
+    ],
     this.items = [
       {
         label: 'Dashboard',

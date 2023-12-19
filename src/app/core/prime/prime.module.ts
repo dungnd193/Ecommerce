@@ -30,6 +30,7 @@ import { TreeSelectModule } from 'primeng/treeselect';
 import { CalendarModule } from 'primeng/calendar';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { AvatarGroupModule } from 'primeng/avatargroup';
+import { MenubarModule } from 'primeng/menubar';
 
 const PrimeComponents = [
   AccordionModule,
@@ -63,7 +64,8 @@ const PrimeComponents = [
   TreeSelectModule,
   CalendarModule,
   SelectButtonModule,
-  AvatarGroupModule
+  AvatarGroupModule,
+  MenubarModule,
 ];
 
 @NgModule({
