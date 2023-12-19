@@ -27,6 +27,10 @@ import { GalleriaModule } from 'primeng/galleria';
 import { CarouselModule } from 'primeng/carousel';
 import { PaginatorModule } from 'primeng/paginator';
 import { TreeSelectModule } from 'primeng/treeselect';
+import { CalendarModule } from 'primeng/calendar';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+
 const PrimeComponents = [
   AccordionModule,
   CheckboxModule,
@@ -57,6 +61,9 @@ const PrimeComponents = [
   CarouselModule,
   PaginatorModule,
   TreeSelectModule,
+  CalendarModule,
+  SelectButtonModule,
+  AvatarGroupModule
 ];
 
 @NgModule({

@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CartService } from '../cart/service/cart.service';
 import { ICartProduct } from '../cart/type/cart.type';
 import { CheckoutService } from './service/checkout.service';
+import { UserService } from '../user/service/user.service';
 
 @Component({
   selector: 'app-checkout',
@@ -14,6 +15,7 @@ export class CheckoutComponent implements OnInit {
   constructor(
     public checkoutService: CheckoutService,
     private cartService: CartService,
+    private userService: UserService,
     private toast: ToastrService
   ) {}
   cartProductList: ICartProduct[] = [];
@@ -48,6 +50,15 @@ export class CheckoutComponent implements OnInit {
     }
   }
   ngOnInit(): void {
+    this.userService.userInfo$.subscribe((data) => {
+      this.formContact.patchValue({
+        user_name: data.name, 
+        address: data.address, 
+        phone: data.phoneNumber, 
+        email: data.email, 
+      });
+      
+    })
     this.cartService.cartProducts$.subscribe((data) => {
       this.cartProductList = data;
       this.subTotal = this.cartProductList.reduce(

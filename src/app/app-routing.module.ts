@@ -40,6 +40,7 @@ const routes: Routes = [
       import('app/modules/checkout/checkout.module').then(
         (m) => m.CheckoutModule
       ),
+    canActivate: [UserGuard],
   },
   {
     path: 'user',
@@ -61,4 +62,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

@@ -60,7 +60,6 @@ export class ProductManagementService {
   getProducts({ page, size }: IGetProducts) {
     this.productManagementApiService.getProducts({ page, size }).subscribe(
       (data) => {
-        console.log(data.content);
         this.productsBS.next(data.content);
         this.totalProductsBS.next(data.pageable.total);
       },

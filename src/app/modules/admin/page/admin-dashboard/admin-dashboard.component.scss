@@ -111,6 +111,9 @@
     border-radius: 7px;
     padding: 0.5rem 1rem;
   }
+  .p-dropdown{
+    width: 200px;
+  }
 }
 .container-fluid,
 .mat-drawer-container {
@@ -222,4 +225,12 @@ h4 {
   padding: 30px;
   height: 100%;
   border-radius: 7px;
+}
+
+.start-date {
+  margin: 0 20px;
+}
+
+.statisticize {
+  margin-left: 20px;
 }

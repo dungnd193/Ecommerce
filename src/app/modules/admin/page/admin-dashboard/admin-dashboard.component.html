@@ -33,25 +33,27 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-lg-6">
+  <div class="col-lg-12">
     <div class="bar-chart">
-      <p-chart
-        type="bar"
-        [data]="basicData"
-        [options]="basicOptions"
-        height="400"
-      ></p-chart>
+      <div class="card flex justify-content-start mb-4">
+        <form [formGroup]="StatisticForm">
+          <p-selectButton [options]="stateOptions" formControlName="value" optionLabel="label"
+            optionValue="value"></p-selectButton>
+        </form>
+      </div>
+      <div class="card flex justify-content-start mb-4">
+        <p-dropdown class="select-product" [options]="products" [(ngModel)]="selectedProduct" optionLabel="name"
+          placeholder="Select a Product"></p-dropdown>
+        <p-calendar class="start-date" [(ngModel)]="startDate" [maxDate]="maxDate"></p-calendar>
+        <p-calendar class="end-date" [(ngModel)]="endDate" [maxDate]="maxDate"></p-calendar>
+        <button pButton pRipple label="Thống kê" class="statisticize" (click)="handleStatistic()"></button>
+      </div>
+      <p-chart type="bar" [data]="chartData" [options]="options" height="400"></p-chart>
     </div>
   </div>
-  <div class="col-lg-6">
+  <div class="col-lg-12">
     <div class="pie-chart">
-      <p-chart
-        type="pie"
-        [data]="data"
-        [options]="chartOptions"
-        [style]="{ width: '40%' }"
-        height="400"
-      ></p-chart>
+      <p-chart type="pie" [data]="data" [options]="chartOptions" [style]="{ width: '40%' }" height="400"></p-chart>
     </div>
   </div>
 </div>

@@ -55,7 +55,7 @@ export class CartService {
     const cartProducts =
       JSON.parse(localStorage.getItem('cartProducts')!) || [];
     const newCartProducts = cartProducts.map((item: ICartProduct) => {
-      if (item.product_id === product.product_id) {
+      if (item.id === product.id) {
         item.quantity = product.quantity;
       }
       return item;

@@ -111,6 +111,7 @@
                 [options]="statuses"
                 [(ngModel)]="order.status"
                 (onChange)="handleChangeOrderStatus($event, order.id)"
+                appendTo="body"
               >
                 <ng-template let-option pTemplate="item">
                   <span
