@@ -4,25 +4,25 @@
       <div class="col-3">
         <div class="side-bar">
           <div class="side-bar__filter">
-            <h3 class="side-bar__filter-title">PRICE FILTER</h3>
+            <h3 class="side-bar__filter-title">Lọc theo giá</h3>
             <p-slider [(ngModel)]="rangeValues" [range]="true"></p-slider>
             <div class="side-bar__filter-price-info">
               <h3 class="side-bar__filter-price-range">
-                Price" {{ rangeValues[0] * priceUnit | currency : "VND" }} -
+                Từ {{ rangeValues[0] * priceUnit | currency : "VND" }} -
                 {{ rangeValues[1] * priceUnit | currency : "VND" }}
               </h3>
               <button
                 pButton
                 pRipple
                 type="button"
-                label="Filter"
+                label="Lọc"
                 class="p-button-raised side-bar__filter-price-btn"
                 (click)="handleFilterByPrice()"
               ></button>
             </div>
           </div>
           <div class="side-bar__filter">
-            <h3 class="side-bar__filter-title">COLOR FILTER</h3>
+            <h3 class="side-bar__filter-title">Lọc theo màu sắc</h3>
             <mat-radio-group name="color-filter">
               <ul class="side-bar__filter-color">
                 <ng-container
@@ -53,12 +53,12 @@
                 class="side-bar__filter-show-more"
                 (click)="handleShowMoreCategories()"
               >
-                Show {{ isShowAllCategories ? "less" : "more" }}
+                Hiển thị {{ isShowAllCategories ? "bớt" : "thêm" }}
               </span>
             </mat-radio-group>
           </div>
           <div class="side-bar__filter">
-            <h3 class="side-bar__filter-title">CATEGORY FILTER</h3>
+            <h3 class="side-bar__filter-title">Lọc theo danh mục</h3>
             <mat-radio-group name="category-filter">
               <ul class="side-bar__filter-category">
                 <mat-radio-button
@@ -95,7 +95,7 @@
                 <p-dropdown
                   [options]="sortOptions"
                   [(ngModel)]="sortKey"
-                  placeholder="Sort By Price"
+                  placeholder="Sắp xếp theo Giá"
                   (onChange)="handleSortByOrder($event)"
                   styleClass="p-mb-2 p-mb-md-0"
                 ></p-dropdown>
@@ -104,7 +104,7 @@
                   <input
                     type="search"
                     pInputText
-                    placeholder="Search by Name"
+                    placeholder="Tìm kiếm theo tên"
                     (input)="handleFilterByName($event)"
                   />
                 </span>
@@ -146,7 +146,7 @@
                     </span>
                     <p-button
                       icon="pi pi-shopping-cart"
-                      label="Add to Cart"
+                      label="Thêm vào giỏ hàng"
                       (Click)="handleAddProductToCart(product)"
                       [disabled]="product.status === 'OUTOFSTOCK'"
                     ></p-button>

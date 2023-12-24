@@ -394,16 +394,16 @@
     <p-table [value]="cartProductList" responsiveLayout="scroll">
       <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
-          Products
+          Sản phẩm
         </div>
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th>Name</th>
-          <th>Image</th>
-          <th>Unit Price</th>
-          <th>Quantity</th>
-          <th>Total</th>
+          <th>Tên sản phẩm</th>
+          <th>Hình ảnh</th>
+          <th>Giá</th>
+          <th>Số lượng</th>
+          <th>Tổng</th>
           <th></th>
         </tr>
       </ng-template>
@@ -457,8 +457,8 @@
       </ng-template>
       <ng-template pTemplate="summary">
         <div class="flex align-items-center justify-content-between">
-          In total there are
-          {{ cartProductList ? cartProductList.length : 0 }} products.
+          Tổng cộng có
+          {{ cartProductList ? cartProductList.length : 0 }} sản phẩm.
         </div>
       </ng-template>
     </p-table>
@@ -469,7 +469,7 @@
             <div class="col-lg-6">
               <div class="cart-action">
                 <div class="cart-clear" (click)="handleClearShoppingCart()">
-                  <span>CLEAR SHOPPING CART</span>
+                  <span>Xoá các sản phẩm trong giỏ hàng</span>
                 </div>
                 <!-- <div class="cart-update">
                   <span>UPDATE SHOPPING CART</span>
@@ -478,7 +478,7 @@
             </div>
             <div class="col-lg-6">
               <div routerLink="/shop" class="continue-shopping">
-                <span>CONTINUE SHOPPING</span>
+                <span>Tiếp tục mua hàng</span>
               </div>
             </div>
           </div>
@@ -487,12 +487,12 @@
           <div class="row">
             <div class="col-lg-6">
               <div class="coupon-code">
-                <h3 class="coupon-code__text">Coupon Code</h3>
+                <h3 class="coupon-code__text">Mã giảm giá</h3>
                 <div>
                   <input
                     type="text"
                     class="coupon-code__input"
-                    placeholder="Enter coupon code"
+                    placeholder="Nhập mã giảm giá"
                     [(ngModel)]="voucher"
                   />
                 </div>
@@ -502,25 +502,25 @@
                   TET2023: Discount 30%
                 </span>
                 <span *ngIf="discount" class="coupon-code__apply"
-                  >Coupon: "{{ this.voucher }}" is applied!</span
+                  >Mã: "{{ this.voucher }}" được áp dụng!</span
                 >
                 <button class="coupon-code__btn" (click)="handleApplyVoucher()">
-                  APPLY
+                  Áp mã
                 </button>
                 <div style="clear: right"></div>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="payment">
-                <h3 class="payment__text">Cart Total</h3>
+                <h3 class="payment__text">Tổng số giỏ hàng</h3>
                 <div class="payment__details">
-                  <span class="payment__details-text">Subtotal</span>
+                  <span class="payment__details-text">Tổng giá sản phẩm</span>
                   <div class="payment__details-price">
                     {{ subTotal | currency : "VND" }}
                   </div>
                 </div>
                 <div class="payment__details">
-                  <span class="payment__details-text">Shipping cost</span>
+                  <span class="payment__details-text">Chi phí vận chuyển</span>
                   <div class="payment__details-price">
                     {{ 0 | currency : "VND" }}
                   </div>
@@ -533,13 +533,13 @@
                   </div>
                 </div>
                 <div class="payment__details">
-                  <span class="payment__details-text">Total</span>
+                  <span class="payment__details-text">Tổng</span>
                   <div class="payment__details-price">
                     {{ subTotal - discount * subTotal | currency : "VND" }}
                   </div>
                 </div>
                 <button class="payment__details-btn" routerLink="/checkout">
-                  PROCEED TO CHECKOUT
+                  Xử lý thanh toán
                 </button>
               </div>
             </div>

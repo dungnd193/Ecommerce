@@ -24,14 +24,14 @@ export class HeaderComponent implements OnInit {
       {
         label: '',
         items: [
-          { label: 'Logout', command: () => {
+          { label: 'Thông tin cá nhân', command: () => this.router.navigate(['/user']) },
+          { label: 'Đơn hàng của tôi' },
+          { label: 'Đăng xua', command: () => {
               localStorage.removeItem('role')
               localStorage.removeItem('accessToken')
               this.router.navigate(['/home']);
             }
           },
-          { label: 'My profile', command: () => this.router.navigate(['/user']) },
-          { label: 'My order' },
         ],
         icon: 'pi pi-user'
       }

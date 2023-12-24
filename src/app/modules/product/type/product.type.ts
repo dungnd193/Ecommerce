@@ -54,10 +54,9 @@ export interface IProduct {
 
 export interface IProductFeedback {
   id?: number;
-  message: string;
-  createdAt: any;
-  vote: number;
-  email: string;
-  username: string;
-  prodId?: string;
+  message?: string;
+  productId?: string;
+  userId?: string;
+  createdAt?: string;
+  rate?: number;
 }

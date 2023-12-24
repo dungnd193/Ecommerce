@@ -16,14 +16,14 @@
       >
         <ng-template pTemplate="caption">
           <div class="management-user">
-            <h5 class="management-user__text">Order Management</h5>
+            <h5 class="management-user__text">Quản lý đơn hàng</h5>
             <div>
               <span class="p-input-icon-left">
                 <i class="pi pi-search"></i>
                 <input
                   pInputText
                   type="text"
-                  placeholder="Search by id, name, phone number, email"
+                  placeholder="Tìm kiếm theo tên, số điện thoại, mã đơn hàng, email"
                   (input)="handleFilterBlobal($event)"
                   class="search-input"
                 />
@@ -41,28 +41,28 @@
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="id" style="width: 150px; text-align: center">
-              Order Id
+              Mã đơn hàng
             </th>
             <th pSortableColumn="user_name" style="text-align: center">
-              Customer
+              Tên khách hàng
             </th>
-            <th style="width: 200px; text-align: center">Address</th>
+            <th style="width: 200px; text-align: center">Địa chỉ</th>
             <th pSortableColumn="email" style="width: 150px">Email</th>
             <th
               style="width: 150px; text-align: center"
               pSortableColumn="phone"
             >
-              Phone Number
+              Số điện thoại
             </th>
-            <th>Detail</th>
+            <th>Thông tin đặt hàng</th>
             <th
               pSortableColumn="price"
               style="width: 150px; text-align: center"
             >
-              Price <p-sortIcon field="price"></p-sortIcon>
+              Giá <p-sortIcon field="price"></p-sortIcon>
             </th>
-            <th style="width: 150px; text-align: center">Delivery Status</th>
-            <th style="width: 160px">Payment Method</th>
+            <th style="width: 150px; text-align: center">Trạng thái giao hàng</th>
+            <th style="width: 160px">Phương thức thanh toán</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-order>

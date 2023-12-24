@@ -22,10 +22,10 @@ export class AdminDashboardComponent implements OnInit {
     private productService: ProductManagementService,
 
   ) { }
-  StatisticForm!: FormGroup;
+  statisticForm!: FormGroup;
   stateOptions: any[] = [
     { label: 'Thống kê sản phẩm đã bán', value: 'TK1' },
-    { label: 'Thống kê sản phẩm tồn kho', value: 'TK2' }
+    { label: 'Thống kê nhập hàng', value: 'TK2' }
   ];
   products: IProduct[] = [
     {
@@ -46,7 +46,8 @@ export class AdminDashboardComponent implements OnInit {
       "nameUrlImage": []
     }
   ];;
-  chartData: any;
+  chartDataSold: any;
+  chartDataImport: any;
   options = {
     responsive: false,
     maintainAspectRatio: false,
@@ -55,24 +56,36 @@ export class AdminDashboardComponent implements OnInit {
   chartOptions = {
     responsive: false,
   };
-  selectedProduct: IProduct | undefined;
+  selectedSoldProduct: IProduct | undefined;
+  selectedImportedProduct: IProduct | undefined;
   startDate!: Date;
   endDate!: Date;
   maxDate!: Date;
 
   handleStatistic() {
-    // console.log(this.StatisticForm.value)
-    this.adminDashboardService.getOrderInRangeTime(
-      {
-        startDate: this.startDate,
-        endDate: this.endDate,
-        productId: this.selectedProduct!.id!
-      }
-    )
+    const { value } = this.statisticForm.value
+    if (value === 'TK1') {
+      this.adminDashboardService.getOrderInRangeTime(
+        {
+          startDate: this.startDate,
+          endDate: this.endDate,
+          productId: this.selectedSoldProduct!.id!
+        }
+      )
+    } else {
+      this.adminDashboardService.getImportedProductInRangeTime(
+        {
+          startDate: this.startDate,
+          endDate: this.endDate,
+          productId: this.selectedImportedProduct!.id!
+        }
+      )
+      console.log("Thong ke nhap hang")
+    }
   }
 
   ngOnInit(): void {
-    this.StatisticForm = new FormGroup({
+    this.statisticForm = new FormGroup({
       value: new FormControl('TK1')
     });
     this.startDate = new Date();
@@ -81,10 +94,17 @@ export class AdminDashboardComponent implements OnInit {
     this.endDate = new Date();
     this.maxDate = new Date();
 
-    this.selectedProduct = this.products[0]
+    this.selectedSoldProduct = this.products[0]
+    this.selectedImportedProduct = this.products[0]
 
     this.productService.getProducts({ page: 1, size: 9999 });
     this.adminDashboardService.getOrderInRangeTime(
+      {
+        startDate: this.startDate,
+        endDate: this.endDate,
+      }
+    )
+    this.adminDashboardService.getImportedProductInRangeTime(
       {
         startDate: this.startDate,
         endDate: this.endDate,
@@ -94,6 +114,7 @@ export class AdminDashboardComponent implements OnInit {
     combineLatest([
       this.productService.products$,
       this.adminDashboardService.dataStatistic$,
+      this.adminDashboardService.importedProductBS$,
     ]).subscribe((data) => {
       this.products = [
         {
@@ -116,13 +137,23 @@ export class AdminDashboardComponent implements OnInit {
         ...data[0]
       ];
 
-      this.chartData = {
+      this.chartDataSold = {
         labels: data[1].map(item => moment(item.date).format('DD MMM')),
         datasets: [
           {
-            label: 'Sản phẩm đã bán',
-            backgroundColor: '#42A5F5',
+            label: this.selectedSoldProduct?.name || '',
+            backgroundColor: '#21C55E',
             data: data[1].map(item => item.quantity),
+          },
+        ],
+      };
+      this.chartDataImport = {
+        labels: data[2].map(item => moment(item.date).format('DD MMM')),
+        datasets: [
+          {
+            label: this.selectedImportedProduct?.name || '',
+            backgroundColor: '#EF4197',
+            data: data[2].map(item => item.quantity),
           },
         ],
       };

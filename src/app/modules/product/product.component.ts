@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { CartService } from '../cart/service/cart.service';
 import { ProductService } from './service/product.service';
 import { IProduct, IProductFeedback } from './type/product.type';
+import { UserService } from '../user/service/user.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-product',
@@ -18,16 +20,15 @@ export class ProductComponent implements OnInit {
     private productService: ProductService,
     private productManagementService: ProductManagementService,
     private cartService: CartService,
+    private userService: UserService,
     private toastr: ToastrService
-  ) {}
+  ) { }
   id!: string;
   product!: IProduct;
-  feedbackList!: IProductFeedback[];
+  reviewList!: any[];
   cartProducts!: IProduct[];
   formFeedback: FormGroup = new FormGroup({
-    vote: new FormControl(4),
-    username: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
+    rate: new FormControl(4),
     message: new FormControl(''),
   });
   productInfo: FormGroup = new FormGroup({
@@ -55,7 +56,8 @@ export class ProductComponent implements OnInit {
     { name: 'XXL', key: 'XXL' },
   ];
   thumbnailImgList: string[] = [];
-
+  reviewPermission: Boolean = false;
+  userInfo: any;
   handleRatingReview(rating: number) {
     return Number(rating.toString()[0]) % 5;
   }
@@ -82,34 +84,47 @@ export class ProductComponent implements OnInit {
   }
 
   handleAddReview() {
-    this.productService.saveProductFeedback({
+    this.productService.saveReview({
+      user_id: this.userInfo.id,
+      username: this.userInfo.username,
+      product_id: this.id,
       ...this.formFeedback.value,
-      proId: this.id,
-      createAt: Date.now(),
-    });
+      avatarPath: this.userInfo.avatarPath
+    })
+    this.formFeedback.patchValue({
+      rate: 4, 
+      message: ''
+    })
   }
 
-  getRandomTime() {
-    return new Date();
+  handleDateReview(date: string) {
+    return moment(date).format('DD-MM-YYYY HH:MM')
   }
+
   ngOnInit(): void {
     this.id = this.activeRouter.snapshot.params['id'];
 
     this.productService.getProduct(this.id);
-    this.productService.getProductFeedback(this.id);
+    this.productService.getReviewByProductId(this.id);
+    this.productService.requestPermissionReview({ productId: this.id })
 
     this.productService.product$.subscribe((data) => {
       this.product = data;
       this.thumbnailImgList = this.product.nameUrlImage || [];
       if (Object.keys(data).length) {
         const product = { ...data, viewCount: data.viewCount! + 1 };
-        console.log(data);
         this.productManagementService.editProduct(product, false);
       }
     });
     this.productService.productFeedback$.subscribe(
-      (data) => ((this.feedbackList = data), console.log(data))
+      (data) => ((this.reviewList = data))
     );
+    this.productService.reviewPermission$.subscribe(
+      (data) => this.reviewPermission = data
+    )
+    this.userService.userInfo$.subscribe((data) => {
+      this.userInfo = data
+    })
 
     this.selectedSize = this.sizes[1];
   }

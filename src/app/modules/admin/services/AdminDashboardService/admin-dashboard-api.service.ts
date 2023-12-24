@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
-import { IGetOrderInRangeTime } from '../../type/admin.type';
+import { IGetOrderInRangeTime, IImportedProductInRangeTime } from '../../type/admin.type';
 
 @Injectable({
   providedIn: 'root',
@@ -17,5 +17,13 @@ export class AdminDashboardApiService {
       .set('productId', productId || ""); 
 
     return this.http.get(`${this.API_URL}/order/rangeTime`, { params });
+  }
+  getImportedProductInRangeTime({startDate, endDate, productId}: IImportedProductInRangeTime) {
+    const params = new HttpParams()
+      .set('startDate', startDate.toString()) 
+      .set('endDate', endDate.toString())
+      .set('productId', productId || ""); 
+
+    return this.http.get(`${this.API_URL}/storage/rangeTime`, { params });
   }
 }

@@ -13,14 +13,18 @@ export class ProductService {
   constructor(
     private productApiService: ProductApiService,
     private toastr: ToastrService
-  ) {}
+  ) { }
   private productBS = new BehaviorSubject<IProduct>({} as IProduct);
-  private productFeedbackBS = new BehaviorSubject<IProductFeedback[]>([]);
+  private productFeedbackBS = new BehaviorSubject<any>([]);
+  private reviewPermissionBS = new BehaviorSubject<Boolean>(false);
   get product$() {
     return this.productBS.asObservable();
   }
   get productFeedback$() {
     return this.productFeedbackBS.asObservable();
+  }
+  get reviewPermission$() {
+    return this.reviewPermissionBS.asObservable();
   }
   getProduct(id: string) {
     this.productApiService
@@ -28,36 +32,24 @@ export class ProductService {
       .subscribe((data) => this.productBS.next(data));
   }
 
-  getProductFeedback(id: string) {
-    this.productApiService
-      .getProductFeedback(id)
-      .subscribe((data) => this.productFeedbackBS.next(data.content));
-  }
-  saveProductFeedback(feedback: IProductFeedback) {
-    this.productApiService.saveProductFeedback(feedback).subscribe(
-      (data) => {
-        this.toastr.success('Send feedback successfully!'),
-          this.getProductFeedback(feedback.prodId!);
-      },
-      (error) => this.toastr.error('Send feedback error!')
-    );
+  requestPermissionReview(pid: { productId: string }) {
+    this.productApiService.requestPermissionReview(pid).subscribe(data => {
+      this.reviewPermissionBS.next(data.reviewPermission)
+    })
   }
 
-  // getProductReview(id: string) {
-  //   this.productApiService.getProductReview().subscribe((data) => {
-  //     const reviewList = data.filter((item: any) => item.postId === id);
-  //     this.productReviewBS.next(reviewList);
-  //   });
-  // }
-  // saveReview(review: IProductReview) {
-  //   this.productApiService.saveReview(review).subscribe(
-  //     (data) => {
-  //       this.toastr.success('Sent review successfully!');
-  //       this.getProductReview(review.postId);
-  //     },
-  //     (err) => {
-  //       this.toastr.error('Sent review error!');
-  //     }
-  //   );
-  // }
+  getReviewByProductId(pId: string) {
+    this.productApiService.getReviewByProductId(pId).subscribe((data) => {
+      console.log(data)
+      this.productFeedbackBS.next(data)
+    })
+  }
+
+  saveReview(review: any) {
+    this.productApiService.saveReview(review).subscribe(() => {
+      this.toastr.success('Send review successfully!')
+      this.getReviewByProductId(review.product_id)
+    })
+  }
+
 }

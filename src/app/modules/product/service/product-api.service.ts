@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
@@ -10,7 +10,7 @@ import { IProductFeedback } from '../type/product.type';
 export class ProductApiService {
   API_URL = environment.serverUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   getProduct(id: string): Observable<any> {
     return this.http.get(`${this.API_URL}/products/${id}`);
   }
@@ -19,6 +19,18 @@ export class ProductApiService {
   }
   saveProductFeedback(feedback: IProductFeedback): Observable<any> {
     return this.http.post(`${this.API_URL}/api/feedbacks`, feedback);
+  }
+  requestPermissionReview(pId: { productId: string }): Observable<any> {
+    return this.http.post(`${this.API_URL}/review/request`, pId)
+  } 
+  saveReview(review: any): Observable<any> {
+    return this.http.post(`${this.API_URL}/review`, review)
+  }
+
+  getReviewByProductId(pId: string) {
+    const params = new HttpParams().set('productId', pId) 
+
+    return this.http.get(`${this.API_URL}/review`, { params });
   }
   // saveReview(review: IProductReview): Observable<any> {
   //   return this.http.post(`${this.API_URL}/review`, review);

@@ -22,10 +22,10 @@ export class OrderManagementComponent implements OnInit {
   colorFilterList: IColors[] = [];
   sizeFilterList: ICategories[] = [];
   statuses = [
-    { label: 'NEW ORDER', value: 'NEW_ORDER' },
-    { label: 'DELIVERING', value: 'DELIVERING' },
-    { label: 'COMPLETED', value: 'COMPLETED' },
-    { label: 'CANCELLED', value: 'CANCELLED' },
+    { label: 'Mới đặt hàng', value: 'NEW_ORDER' },
+    { label: 'Đang vận chuyển', value: 'DELIVERING' },
+    { label: 'Đã giao hàng', value: 'COMPLETED' },
+    { label: 'Đã huỷ', value: 'CANCELLED' },
   ];
   constructor(
     private orderService: OrderManagementService,

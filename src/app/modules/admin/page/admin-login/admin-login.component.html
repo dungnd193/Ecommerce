@@ -1,11 +1,11 @@
 <div class="admin">
   <h2 class="admin-title">Log In</h2>
   <mat-card action="" class="admin-form-login">
-    <mat-card-title>Sign in to admin account</mat-card-title>
+    <mat-card-title>Đăng nhập bằng tài khoản admin</mat-card-title>
     <mat-card-content>
       <form class="login-form" [formGroup]="formLogin" (ngSubmit)="onSubmit()">
         <mat-form-field class="login-form__field" appearance="outline">
-          <mat-label>Username or Email address</mat-label>
+          <mat-label>Username hoặc địa chỉ Email</mat-label>
           <input
             type="email"
             matInput
@@ -18,11 +18,11 @@
           || formLogin.get('username')?.errors?.['required']
           || formLogin.get('username')?.touched"
           >
-            Username or Email address is <strong>required</strong>
+            Username hoặc địa chỉ Email là <strong>bắt buộc</strong>
           </mat-error>
         </mat-form-field>
         <mat-form-field class="login-form__field" appearance="outline">
-          <mat-label>Password</mat-label>
+          <mat-label>Mật khẩu</mat-label>
           <input
             [type]="!showPassword ? 'password' : 'text'"
             matInput
@@ -37,27 +37,27 @@
           || formLogin.get('password')?.errors?.['required']
           || formLogin.get('password')?.touched"
           >
-            Password is <strong>required</strong>
+            Mật khẩu is <strong>bắt buộc</strong>
           </mat-error>
         </mat-form-field>
         <div class="login-form__action">
-          <mat-checkbox>Remember me</mat-checkbox>
+          <mat-checkbox>Ghi nhớ đăng nhập</mat-checkbox>
           <div class="login-form__button">
             <button mat-raised-button color="accent" type="submit">
-              Log in
+              Đăng nhập
             </button>
           </div>
         </div>
       </form>
       <p-divider>
-        <b>OR</b>
+        <b>Hoặc</b>
       </p-divider>
       <div class="login-social">
         <button
           pButton
           pRipple
           type="button"
-          label="Sign up with Facebook"
+          label="Đăng nhập bằng Facebook"
           class="p-button-raised"
         >
           <i class="pi pi-facebook"></i>
@@ -66,7 +66,7 @@
           pButton
           pRipple
           type="button"
-          label="Sign up with Google"
+          label="Đăng nhập bằng Google"
           class="p-button-raised p-button-danger"
         >
           <i class="pi pi-google"></i>

@@ -26,7 +26,7 @@ export class UserService {
         this.userInfoBS.next(data)
       },
       () => {
-        this.toastr.error('Get user information error!');
+        // this.toastr.error('Get user information error!');
       }
     );
   }

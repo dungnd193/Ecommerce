@@ -7,7 +7,7 @@
           <button
             pButton
             pRipple
-            label="New"
+            label="Thêm sản phẩm"
             icon="pi pi-plus"
             class="p-button-success mr-2"
             (click)="handleOpenAddProductDialog()"
@@ -26,7 +26,7 @@
           <button
             pButton
             pRipple
-            label="Export"
+            label="Xuất excel"
             icon="pi pi-upload"
             class="p-button-help"
           ></button>
@@ -52,13 +52,13 @@
       >
         <ng-template pTemplate="caption">
           <div class="management-product">
-            <h5 class="management-product__text">Manage Products</h5>
+            <h5 class="management-product__text">Quản lý danh sách sản phẩm</h5>
             <span class="p-input-icon-left">
               <i class="pi pi-search"></i>
               <input
                 pInputText
                 type="text"
-                placeholder="Search by name..."
+                placeholder="Tìm kiếm theo tên..."
                 (input)="handleFilterBlobal($event)"
               />
             </span>
@@ -70,17 +70,17 @@
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
             <th pSortableColumn="name">
-              Name <p-sortIcon field="name"></p-sortIcon>
+              Tên <p-sortIcon field="name"></p-sortIcon>
             </th>
-            <th>Image</th>
+            <th>Ảnh</th>
             <th pSortableColumn="price">
-              Price <p-sortIcon field="price"></p-sortIcon>
+              Giá <p-sortIcon field="price"></p-sortIcon>
             </th>
             <th pSortableColumn="category.name">
-              Category <p-sortIcon field="categoryDto.name"></p-sortIcon>
+              Danh mục <p-sortIcon field="categoryDto.name"></p-sortIcon>
             </th>
             <th pSortableColumn="status">
-              Status <p-sortIcon field="status"></p-sortIcon>
+              Trạng thái <p-sortIcon field="status"></p-sortIcon>
             </th>
             <th></th>
           </tr>
@@ -137,7 +137,7 @@
         </ng-template>
         <ng-template pTemplate="summary">
           <div class="flex align-items-center justify-content-between">
-            In total there are {{ products ? products.length : 0 }} products.
+            Tổng cộng có {{ products ? products.length : 0 }} sản phẩm.
           </div>
         </ng-template>
       </p-table>
@@ -151,7 +151,7 @@
     <p-dialog
       [(visible)]="productDialog"
       [style]="{ width: '80vw' }"
-      header="Product Details"
+      header="Thông tin chi tiết sản phẩm"
       [modal]="true"
       styleClass="p-fluid"
     >
@@ -187,7 +187,7 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <label class="label-text" for="name">Name</label>
+            <label class="label-text" for="name">Tên sản phẩm</label>
             <input
               type="text"
               pInputText
@@ -200,7 +200,7 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <label class="label-text" for="name">Product Image</label>
+            <label class="label-text" for="name">Hình ảnh sản phẩm</label>
             <!-- <div>
               <label class="label-text" style="font-weight: 300" for="name"
                 >Choose Product Color</label
@@ -239,7 +239,7 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <label class="label-text mb-3">Category</label>
+            <label class="label-text mb-3">Danh mục</label>
 
             <mat-radio-group
               [value]="product.category?.id"
@@ -270,7 +270,7 @@
             <ng-container *ngFor="let item of detailRow">
               <div class="row">
                 <div class="col-4">
-                  <label class="label-text">Colors</label>
+                  <label class="label-text">Màu sắc</label>
                   <p-dropdown
                     placeholder="Select color"
                     [options]="colors"
@@ -285,7 +285,7 @@
                   </p-dropdown>
                 </div>
                 <div class="col-4">
-                  <label class="label-text">Sizes</label>
+                  <label class="label-text">Kích cỡ</label>
                   <p-dropdown
                     placeholder="Select size"
                     [options]="sizes"
@@ -301,7 +301,7 @@
                 </div>
                 <div class="col-3">
                   <div class="product-item__quantity">
-                    <label class="label-text" for="quantity">Quantity</label>
+                    <label class="label-text" for="quantity">Số lượng</label>
                     <p-inputNumber
                       id="quantity"
                       [(ngModel)]="item.quantity"
@@ -336,7 +336,7 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <label class="label-text" for="description">Description</label>
+            <label class="label-text" for="description">Mô tả sản phẩm</label>
             <textarea
               id="description"
               pInputTextarea
@@ -350,7 +350,7 @@
         <div class="row">
           <div class="col-4">
             <div class="product-item__price">
-              <label class="label-text" for="price">Price</label>
+              <label class="label-text" for="price">Giá bán</label>
               <p-inputNumber
                 id="price"
                 mode="currency"
@@ -362,7 +362,7 @@
           </div>
           <div class="col-4">
             <div class="product-item__price">
-              <label class="label-text" for="discount">Discount</label>
+              <label class="label-text" for="discount">Giảm giá (%)</label>
               <p-inputNumber
                 id="discount"
                 suffix="%"
@@ -372,7 +372,7 @@
           </div>
           <div class="col-4">
             <div class="product-item__price">
-              <label class="label-text" for="brand">Brand</label>
+              <label class="label-text" for="brand">Thương hiệu</label>
               <input
                 type="text"
                 pInputText
@@ -390,7 +390,7 @@
         <button
           pButton
           pRipple
-          label="Cancel"
+          label="Huỷ"
           icon="pi pi-times"
           class="p-button-text"
           (click)="handleCloseDialog()"
@@ -398,7 +398,7 @@
         <button
           pButton
           pRipple
-          label="Save"
+          label="Lưu"
           icon="pi pi-check"
           class="p-button-text"
           (click)="saveProduct()"
