@@ -18,11 +18,12 @@ export class AdminDashboardApiService {
 
     return this.http.get(`${this.API_URL}/order/rangeTime`, { params });
   }
-  getImportedProductInRangeTime({startDate, endDate, productId}: IImportedProductInRangeTime) {
+  getImportedProductInRangeTime({startDate, endDate, productId, flag}: IImportedProductInRangeTime) {
     const params = new HttpParams()
       .set('startDate', startDate.toString()) 
       .set('endDate', endDate.toString())
-      .set('productId', productId || ""); 
+      .set('productId', productId || "")
+      .set('flag', flag || 0); 
 
     return this.http.get(`${this.API_URL}/storage/rangeTime`, { params });
   }

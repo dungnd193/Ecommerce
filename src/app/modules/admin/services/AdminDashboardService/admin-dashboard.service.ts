@@ -32,8 +32,8 @@ export class AdminDashboardService {
       }
     );
   }
-  getImportedProductInRangeTime({startDate, endDate, productId}: IImportedProductInRangeTime) {
-    this.adminDashboardApiService.getImportedProductInRangeTime({startDate, endDate, productId}).subscribe(
+  getImportedProductInRangeTime({startDate, endDate, productId, flag}: IImportedProductInRangeTime) {
+    this.adminDashboardApiService.getImportedProductInRangeTime({startDate, endDate, productId, flag}).subscribe(
       (data: any) => {
         this.importedProductBS.next(data)
       },

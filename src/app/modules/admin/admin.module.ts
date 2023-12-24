@@ -12,6 +12,7 @@ import { ProductManagementComponent } from './page/product-management/product-ma
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { OrderManagementComponent } from './page/order-management/order-management.component';
+import { ImportProductComponent } from './page/import-product/import-product.component';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -19,6 +20,7 @@ import { OrderManagementComponent } from './page/order-management/order-manageme
     AdminDashboardComponent,
     ProductManagementComponent,
     OrderManagementComponent,
+    ImportProductComponent
   ],
   imports: [
     ReactiveFormsModule,

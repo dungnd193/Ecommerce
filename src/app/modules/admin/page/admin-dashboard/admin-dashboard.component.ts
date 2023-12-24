@@ -77,7 +77,8 @@ export class AdminDashboardComponent implements OnInit {
         {
           startDate: this.startDate,
           endDate: this.endDate,
-          productId: this.selectedImportedProduct!.id!
+          productId: this.selectedImportedProduct!.id!,
+          flag: 0
         }
       )
       console.log("Thong ke nhap hang")
@@ -108,6 +109,7 @@ export class AdminDashboardComponent implements OnInit {
       {
         startDate: this.startDate,
         endDate: this.endDate,
+        flag: 0 
       }
     )
 

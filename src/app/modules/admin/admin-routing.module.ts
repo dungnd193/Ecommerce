@@ -6,6 +6,8 @@ import { AdminDashboardComponent } from './page/admin-dashboard/admin-dashboard.
 import { AdminLoginComponent } from './page/admin-login/admin-login.component';
 import { ProductManagementComponent } from './page/product-management/product-management.component';
 import { OrderManagementComponent } from './page/order-management/order-management.component';
+import { ImportProductComponent } from './page/import-product/import-product.component';
+
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   {
@@ -30,6 +32,11 @@ const routes: Routes = [
       {
         path: 'order-management',
         component: OrderManagementComponent,
+        canActivate: [AdminGuard],
+      },
+      {
+        path: 'import-product',
+        component: ImportProductComponent,
         canActivate: [AdminGuard],
       },
     ],

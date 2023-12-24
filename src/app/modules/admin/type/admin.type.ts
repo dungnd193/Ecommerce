@@ -13,6 +13,7 @@ export interface IImportedProductInRangeTime {
   startDate: Date;
   endDate: Date;
   productId?: string;
+  flag: 0 | 1;
 }
 
 export interface IDataStatistic {
