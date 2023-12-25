@@ -19,6 +19,7 @@ export interface IOrder {
   status: string;
   payment_method: string;
   order_list: IOrderItem[];
+  discount: number;
 }
 
 export interface IOrderItem {

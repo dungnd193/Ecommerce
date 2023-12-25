@@ -27,4 +27,13 @@ export class AdminDashboardApiService {
 
     return this.http.get(`${this.API_URL}/storage/rangeTime`, { params });
   }
+  getImportedProductInMonth({startDate, endDate, productId, flag}: IImportedProductInRangeTime) {
+    const params = new HttpParams()
+      .set('startDate', startDate.toString()) 
+      .set('endDate', endDate.toString())
+      .set('productId', productId || "")
+      .set('flag', flag || 1); 
+
+    return this.http.get(`${this.API_URL}/storage/rangeTime`, { params });
+  }
 }

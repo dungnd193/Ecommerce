@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminDashboardService } from '../../services/AdminDashboardService/admin-dashboard.service';
 import { ProductManagementService } from '../../services/ProductManagementService/product-management.service';
-import { combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { IProduct } from 'app/modules/product/type/product.type';
 import moment from 'moment';
 import { FormControl, FormGroup } from '@angular/forms';
+import { IOrder } from '../../type/order-management.type';
+import { OrderManagementService } from '../../services/OrderManagementService/order-management.service';
 
 interface Product {
   name: string;
@@ -20,8 +22,9 @@ export class AdminDashboardComponent implements OnInit {
   constructor(
     private adminDashboardService: AdminDashboardService,
     private productService: ProductManagementService,
-
+    private orderService: OrderManagementService,
   ) { }
+  private subscriptions: Subscription[] = [];
   statisticForm!: FormGroup;
   stateOptions: any[] = [
     { label: 'Thống kê sản phẩm đã bán', value: 'TK1' },
@@ -61,7 +64,12 @@ export class AdminDashboardComponent implements OnInit {
   startDate!: Date;
   endDate!: Date;
   maxDate!: Date;
+  completedOrders!: IOrder[];
 
+  monthlyImportedProducts: any = []
+  monthlyStartDate!: Date;
+  monthlyEndDate!: Date;
+  monthlyMaxDate!: Date;
   handleStatistic() {
     const { value } = this.statisticForm.value
     if (value === 'TK1') {
@@ -81,10 +89,48 @@ export class AdminDashboardComponent implements OnInit {
           flag: 0
         }
       )
-      console.log("Thong ke nhap hang")
     }
   }
+  handleDisplayDate(date: Date) {
+    return moment(date).format("DD/MM/YYYY")
+  }
+  handleTotalIncome() {
+    let totalPrice = 0
+    this.completedOrders.forEach(order => {
+      totalPrice += order.order_list.reduce(
+        (total, currentValue) =>
+          total + currentValue.price! * currentValue.quantity!,
+        0
+      ) * (1 - order.discount);
 
+      const totalProduct = order.order_list.reduce(
+        (total, currentValue) =>
+          total + currentValue.quantity,
+        0
+      );
+
+
+    })
+
+    return totalPrice
+  }
+  handleTotalSoldProduct() {
+    let totalSoldProduct = 0
+    this.completedOrders.forEach(order => {
+      totalSoldProduct += order.order_list.reduce(
+        (total, currentValue) =>
+          total + currentValue.quantity,
+        0
+      );
+    })
+
+    return totalSoldProduct
+  }
+
+  handleProfit() {
+    return this.monthlyImportedProducts.reduce((total: number, currentValue: any) =>
+      total + currentValue.quantity*currentValue.imported_price_per_product, 0)
+  }
   ngOnInit(): void {
     this.statisticForm = new FormGroup({
       value: new FormControl('TK1')
@@ -94,6 +140,12 @@ export class AdminDashboardComponent implements OnInit {
 
     this.endDate = new Date();
     this.maxDate = new Date();
+
+    this.monthlyStartDate = new Date();
+    this.monthlyStartDate.setDate(1);
+
+    this.monthlyEndDate = new Date();
+    this.monthlyMaxDate = new Date();
 
     this.selectedSoldProduct = this.products[0]
     this.selectedImportedProduct = this.products[0]
@@ -109,14 +161,24 @@ export class AdminDashboardComponent implements OnInit {
       {
         startDate: this.startDate,
         endDate: this.endDate,
-        flag: 0 
+        flag: 0
       }
     )
+    this.adminDashboardService.getImportedProductInMonth(
+      {
+        startDate: this.monthlyStartDate,
+        endDate: this.monthlyEndDate,
+        flag: 1
+      }
+    )
+    this.orderService.getOrders();
 
-    combineLatest([
+    const subscription = combineLatest([
       this.productService.products$,
       this.adminDashboardService.dataStatistic$,
       this.adminDashboardService.importedProductBS$,
+      this.orderService.orders$,
+      this.adminDashboardService.monthlyImportedProductBS$,
     ]).subscribe((data) => {
       this.products = [
         {
@@ -159,6 +221,11 @@ export class AdminDashboardComponent implements OnInit {
           },
         ],
       };
+
+      this.completedOrders = data[3].filter(order => order.status === "COMPLETED");
+      
+      this.monthlyImportedProducts = data[4]
+
     });
 
     this.data = {
@@ -178,6 +245,6 @@ export class AdminDashboardComponent implements OnInit {
     };
 
 
-
+    this.subscriptions.push(subscription);
   }
 }
