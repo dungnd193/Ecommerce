@@ -36,4 +36,15 @@ export class OrderManagementService {
       }
     );
   }
+  cancelOrder(id: string, status: EOrderStatus, callback: Function) {
+    this.orderManagementApiService.updateOrderStatus(id, status).subscribe(
+      () => {
+        this.toast.success(`Cancel order ${id} successfully`);
+        callback()
+      },
+      () => {
+        this.toast.error('Fetching data error!');
+      }
+    );
+  }
 }

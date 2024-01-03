@@ -49,6 +49,12 @@ const routes: Routes = [
     canActivate: [UserGuard],
   },
   {
+    path: 'my-orders',
+    loadChildren: () =>
+      import('app/modules/my-orders/my-orders.module').then((m) => m.MyOrdersModule),
+    canActivate: [UserGuard],
+  },
+  {
     path: 'admin',
     loadChildren: () =>
       import('app/modules/admin/admin.module').then((m) => m.AdminModule),

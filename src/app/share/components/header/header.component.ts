@@ -25,8 +25,8 @@ export class HeaderComponent implements OnInit {
         label: '',
         items: [
           { label: 'Thông tin cá nhân', command: () => this.router.navigate(['/user']) },
-          { label: 'Đơn hàng của tôi' },
-          { label: 'Đăng xua', command: () => {
+          { label: 'Đơn hàng của tôi' , command: () => this.router.navigate(['/my-orders'])},
+          { label: 'Đăng xuất', command: () => {
               localStorage.removeItem('role')
               localStorage.removeItem('accessToken')
               this.router.navigate(['/home']);
