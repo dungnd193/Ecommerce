@@ -10,6 +10,9 @@ import {
   IUserInfo,
 } from '../../type/order-management.type';
 import { ICategories, IColors } from '../../type/product-management.type';
+import moment from 'moment';
+import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-order-management',
   templateUrl: './order-management.component.html',
@@ -53,6 +56,40 @@ export class OrderManagementComponent implements OnInit {
   }
   handleChangeOrderStatus(event: any, id: string) {
     this.orderService.updateOrderStatus(id, event.value);
+  }
+  handleExportToExcel() {
+    const fileName = "orders";
+
+    const renamedData = this.orders.map(item => {
+      let products = ""
+      item.order_list.forEach(order_item => {
+        products += `${order_item.name} - Màu: ${this.handleConvertColor(order_item.colorId)} - Kích cỡ: ${this.handleConvertSize(order_item.sizeId)} - Số lượng: ${order_item.quantity}\n`
+      })
+      return {
+        "Tên khách hàng": item.user_name,
+        "Địa chỉ": item.address,
+        "Postcode": item.postcode,
+        "Email": item.email,
+        "Ghi chú": item.note,
+        "Chi tiết đơn hàng": products.slice(0, -1),
+        "Giảm giá": `${item.discount*100}%`,
+        "Tổng tiền": this.handleTotalPrice(item.order_list),
+        "Ngày đặt hàng": moment(item.createdAt).format("DD/MM/YYYY"),
+        "Trạng thái đơn hàng": item.status
+      }
+    });
+
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(renamedData);
+    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName + '.xlsx';
+    a.click();
+    window.URL.revokeObjectURL(url);
   }
   ngOnInit(): void {
     this.orderService.getOrders();

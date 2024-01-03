@@ -202,7 +202,7 @@ export class AdminDashboardComponent implements OnInit {
       ];
 
       this.chartDataSold = {
-        labels: data[1].map(item => moment(item.date).format('DD MMM')),
+        labels: data[1].map(item => moment(item.date).format('DD/MM')),
         datasets: [
           {
             label: this.selectedSoldProduct?.name || '',
@@ -212,7 +212,7 @@ export class AdminDashboardComponent implements OnInit {
         ],
       };
       this.chartDataImport = {
-        labels: data[2].map(item => moment(item.date).format('DD MMM')),
+        labels: data[2].map(item => moment(item.date).format('DD/MM')),
         datasets: [
           {
             label: this.selectedImportedProduct?.name || '',

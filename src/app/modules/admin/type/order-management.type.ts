@@ -20,6 +20,7 @@ export interface IOrder {
   payment_method: string;
   order_list: IOrderItem[];
   discount: number;
+  createdAt: Date;
 }
 
 export interface IOrderItem {

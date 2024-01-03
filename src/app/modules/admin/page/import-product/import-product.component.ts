@@ -6,6 +6,7 @@ import { ICategories, IColors, ISizes } from '../../type/product-management.type
 import { AdminDashboardService } from '../../services/AdminDashboardService/admin-dashboard.service';
 import moment from 'moment';
 import { ImportProductService } from '../../services/ImportProductService/import-product.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-import-product',
@@ -76,6 +77,30 @@ export class ImportProductComponent implements OnInit {
     }
     this.importProductService.saveImportProduct(iP)
     this.productDialog = false;
+  }
+
+  handleExportToExcel() {
+    const fileName = "import_product";
+
+    const renamedData = this.importedProducts.map(item => ({
+      "Tên sản phẩm": item.product_name,
+      "Kích thước": item.size_name,
+      "Màu sắc": item.color_name,
+      "Giá nhập": item.imported_price_per_product,
+      "Ngày nhập": moment(item.createdAt).format("DD/MM/YYYY")
+    }));
+
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(renamedData);
+    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName + '.xlsx';
+    a.click();
+    window.URL.revokeObjectURL(url);
   }
 
 
