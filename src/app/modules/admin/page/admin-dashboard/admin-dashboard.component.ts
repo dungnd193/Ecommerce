@@ -102,14 +102,6 @@ export class AdminDashboardComponent implements OnInit {
           total + currentValue.price! * currentValue.quantity!,
         0
       ) * (1 - order.discount);
-
-      const totalProduct = order.order_list.reduce(
-        (total, currentValue) =>
-          total + currentValue.quantity,
-        0
-      );
-
-
     })
 
     return totalPrice
@@ -127,7 +119,7 @@ export class AdminDashboardComponent implements OnInit {
     return totalSoldProduct
   }
 
-  handleProfit() {
+  calculateImportedCost() {
     return this.monthlyImportedProducts.reduce((total: number, currentValue: any) =>
       total + currentValue.quantity*currentValue.imported_price_per_product, 0)
   }
@@ -171,13 +163,13 @@ export class AdminDashboardComponent implements OnInit {
         flag: 1
       }
     )
-    this.orderService.getOrders();
+    this.orderService.getOrdersThisMonth()
 
     const subscription = combineLatest([
       this.productService.products$,
       this.adminDashboardService.dataStatistic$,
       this.adminDashboardService.importedProductBS$,
-      this.orderService.orders$,
+      this.orderService.ordersThisMonth$,
       this.adminDashboardService.monthlyImportedProductBS$,
     ]).subscribe((data) => {
       this.products = [

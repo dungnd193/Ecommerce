@@ -14,6 +14,9 @@ export class OrderManagementApiService {
   getOrders(): Observable<any> {
     return this.http.get(`${this.API_URL}/order`);
   }
+  getOrdersThisMonth(): Observable<any> {
+    return this.http.get(`${this.API_URL}/order/this-month`)
+  }
   updateOrderStatus(id: string, status: EOrderStatus): Observable<any> {
     return this.http.put(`${this.API_URL}/order/${id}/status`, { status });
   }

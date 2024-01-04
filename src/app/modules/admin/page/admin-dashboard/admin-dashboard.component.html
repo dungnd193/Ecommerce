@@ -34,7 +34,7 @@
         <div class="col-lg-3 col-md-6 col-sm-12">
           <div class="single_quick_activity" style="background-color: #6dd4b1">
             <h4>Lợi nhuận</h4>
-            <h3><span class="counter">{{ handleTotalIncome() - handleProfit() | currency: "VND"}}</span></h3>
+            <h3><span class="counter">{{ handleTotalIncome() - calculateImportedCost() | currency: "VND"}}</span></h3>
             <!-- <p>Saved 65%</p> -->
           </div>
         </div>
