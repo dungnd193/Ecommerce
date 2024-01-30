@@ -21,6 +21,7 @@ export class CheckoutComponent implements OnInit {
   cartProductList: ICartProduct[] = [];
   subTotal: number = 0;
   discount: number = 0;
+  userId: string = "";
   formContact: FormGroup = new FormGroup({
     user_name: new FormControl('', Validators.required),
     address: new FormControl('', Validators.required),
@@ -38,7 +39,7 @@ export class CheckoutComponent implements OnInit {
         return item;
       });
       const params = {
-        user_id: 'b8fea1d4-b1b5-4782-a533-926936930588',
+        user_id: this.userId,
         ...this.formContact.value,
         status: 'NEW_ORDER',
         order_list,
@@ -51,6 +52,7 @@ export class CheckoutComponent implements OnInit {
   }
   ngOnInit(): void {
     this.userService.userInfo$.subscribe((data) => {
+      this.userId = data.id;
       this.formContact.patchValue({
         user_name: data.name, 
         address: data.address, 

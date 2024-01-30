@@ -63,6 +63,13 @@ export class ImportProductComponent implements OnInit {
   }
   handleCloseDialog() {
     this.productDialog = false;
+    this.newImportProduct = {
+      size : {},
+      color : {},
+      quantity : 0,
+      imported_price_per_product : 0,
+    }
+    this.selectedProduct = {}
   }
   saveImportedProduct() {
     const iP = {
@@ -110,8 +117,8 @@ export class ImportProductComponent implements OnInit {
     this.productService.getProducts({ page: 1, size: 9999 });
     this.adminDashboardService.getImportedProductInRangeTime(
       {
-        startDate: new Date("2023-01-01T00:00:00.000Z"),
-        endDate: new Date("2023-12-31T23:59:59.000Z"),
+        startDate: new Date("2024-01-01T00:00:00.000Z"),
+        endDate: new Date("2024-12-31T23:59:59.000Z"),
         flag: 1
       }
     )

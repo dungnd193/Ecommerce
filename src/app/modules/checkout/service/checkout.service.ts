@@ -23,7 +23,7 @@ export class CheckoutService {
         this.isOrderSuccess = true;
       },
       () => {
-        this.toastr.error('Order error!');
+        this.toastr.error('Số lượng sản phẩm có thể đã hết, hãy kiểm tra lại!');
       }
     );
   }

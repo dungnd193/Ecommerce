@@ -16,9 +16,9 @@ export class ImportProductService {
     this.importProductApiService.saveImportProduct(importProduct).subscribe(() => {
       this.adminDashboardService.getImportedProductInRangeTime(
         {
-          startDate: new Date("2023-01-01T00:00:00.000Z"),
-          endDate: new Date("2023-12-31T23:59:59.000Z"),
-          flag: 0
+          startDate: new Date("2024-01-01T00:00:00.000Z"),
+          endDate: new Date("2024-12-31T23:59:59.000Z"),
+          flag: 1
         }
       )
       this.toast.success("Save imported product successfully!")
